@@ -207,8 +207,8 @@ describe('Customer Resolvers', () => {
     });
   });
 
-  describe('Resolver Count', () => {
-    it('should create exactly 3 customer-related resolvers', () => {
+  describe('searchCustomerByEmail Resolver', () => {
+    it('should create searchCustomerByEmail resolver attached to Query.searchCustomerByEmail', () => {
       // Arrange
       const app = new App();
       const tables = createMockDynamoDBStack(app);
@@ -218,13 +218,68 @@ describe('Customer Resolvers', () => {
       const template = Template.fromStack(stack);
 
       // Assert
-      // listCustomers、getCustomer、createCustomerの3つのリゾルバーが作成される
+      template.hasResourceProperties('AWS::AppSync::Resolver', {
+        TypeName: 'Query',
+        FieldName: 'searchCustomerByEmail',
+      });
+    });
+
+    it('should use CustomersDataSource for searchCustomerByEmail resolver', () => {
+      // Arrange
+      const app = new App();
+      const tables = createMockDynamoDBStack(app);
+
+      // Act
+      const stack = new AppSyncStack(app, 'TestAppSyncStack', tables);
+      const template = Template.fromStack(stack);
+
+      // Assert
+      template.hasResourceProperties('AWS::AppSync::Resolver', {
+        TypeName: 'Query',
+        FieldName: 'searchCustomerByEmail',
+        DataSourceName: 'CustomersDataSource',
+      });
+    });
+
+    it('should use APPSYNC_JS runtime for searchCustomerByEmail resolver', () => {
+      // Arrange
+      const app = new App();
+      const tables = createMockDynamoDBStack(app);
+
+      // Act
+      const stack = new AppSyncStack(app, 'TestAppSyncStack', tables);
+      const template = Template.fromStack(stack);
+
+      // Assert
+      template.hasResourceProperties('AWS::AppSync::Resolver', {
+        TypeName: 'Query',
+        FieldName: 'searchCustomerByEmail',
+        Runtime: {
+          Name: 'APPSYNC_JS',
+          RuntimeVersion: '1.0.0',
+        },
+      });
+    });
+  });
+
+  describe('Resolver Count', () => {
+    it('should create exactly 4 customer-related resolvers', () => {
+      // Arrange
+      const app = new App();
+      const tables = createMockDynamoDBStack(app);
+
+      // Act
+      const stack = new AppSyncStack(app, 'TestAppSyncStack', tables);
+      const template = Template.fromStack(stack);
+
+      // Assert
+      // listCustomers、getCustomer、createCustomer、searchCustomerByEmailの4つのリゾルバーが作成される
       const resolvers = template.findResources('AWS::AppSync::Resolver');
       const customerResolvers = Object.values(resolvers).filter((resolver: any) => {
         const fieldName = resolver.Properties.FieldName;
-        return fieldName === 'listCustomers' || fieldName === 'getCustomer' || fieldName === 'createCustomer';
+        return fieldName === 'listCustomers' || fieldName === 'getCustomer' || fieldName === 'createCustomer' || fieldName === 'searchCustomerByEmail';
       });
-      expect(customerResolvers.length).toBe(3);
+      expect(customerResolvers.length).toBe(4);
     });
   });
 });

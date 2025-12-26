@@ -58,8 +58,12 @@ export class AppSyncStack extends Stack {
 
     // DynamoDBデータソースを作成
     const customersDataSource = this.api.addDynamoDbDataSource('CustomersDataSource', customersTable);
+    // 将来のタスクで使用予定のデータソース
+    // @ts-expect-error - 将来の商品・注文リゾルバーで使用予定
     const productsDataSource = this.api.addDynamoDbDataSource('ProductsDataSource', productsTable);
+    // @ts-expect-error - 将来の注文リゾルバーで使用予定
     const ordersDataSource = this.api.addDynamoDbDataSource('OrdersDataSource', ordersTable);
+    // @ts-expect-error - 将来の注文明細リゾルバーで使用予定
     const orderItemsDataSource = this.api.addDynamoDbDataSource('OrderItemsDataSource', orderItemsTable);
 
     // ===== 顧客管理リゾルバー =====
@@ -92,6 +96,16 @@ export class AppSyncStack extends Stack {
       dataSource: customersDataSource,
       runtime: FunctionRuntime.JS_1_0_0,
       code: Code.fromAsset(join(__dirname, 'resolvers/customers/createCustomer.js')),
+    });
+
+    // Query.searchCustomerByEmail リゾルバー
+    new Resolver(this, 'SearchCustomerByEmailResolver', {
+      api: this.api,
+      typeName: 'Query',
+      fieldName: 'searchCustomerByEmail',
+      dataSource: customersDataSource,
+      runtime: FunctionRuntime.JS_1_0_0,
+      code: Code.fromAsset(join(__dirname, 'resolvers/customers/searchCustomerByEmail.js')),
     });
 
     // CloudFormation Outputsでエンドポイントとキーを出力

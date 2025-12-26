@@ -89,7 +89,7 @@
   - AppSyncStackで各リゾルバーをResolverConstructで登録(typeName: 'Query'/'Mutation', fieldName: 'listCustomers'等)
   - _Requirements: 4.1, 4.2, 4.4, 4.5_
 
-- [ ] 4.2 (P) メールアドレス検索リゾルバー実装
+- [x] 4.2 (P) メールアドレス検索リゾルバー実装
   - packages/cdk/lib/appsync/resolvers/customers/searchCustomerByEmail.jsを作成
   - email-gsiを使用したDynamoDB Queryオペレーションを実装
   - メールアドレス形式バリデーション(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)をリゾルバー内で実行
