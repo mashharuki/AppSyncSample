@@ -4,7 +4,7 @@ import { AttributeType, BillingMode, Table } from 'aws-cdk-lib/aws-dynamodb';
 import { describe, expect, it } from 'vitest';
 import { AppSyncStack } from '../../../lib/appsync/appsync-stack';
 
-describe('Customer Resolvers', () => {
+describe('Product Resolvers', () => {
   /**
    * テストヘルパー: モックDynamoDBテーブルを作成
    */
@@ -39,8 +39,8 @@ describe('Customer Resolvers', () => {
     return { customersTable, productsTable, ordersTable, orderItemsTable };
   };
 
-  describe('listCustomers Resolver', () => {
-    it('should create listCustomers resolver attached to Query.listCustomers', () => {
+  describe('listProducts Resolver', () => {
+    it('should create listProducts resolver attached to Query.listProducts', () => {
       // Arrange
       const app = new App();
       const tables = createMockDynamoDBStack(app);
@@ -50,14 +50,14 @@ describe('Customer Resolvers', () => {
       const template = Template.fromStack(stack);
 
       // Assert
-      // listCustomersリゾルバーが作成されていることを確認
+      // listProductsリゾルバーが作成されていることを確認
       template.hasResourceProperties('AWS::AppSync::Resolver', {
         TypeName: 'Query',
-        FieldName: 'listCustomers',
+        FieldName: 'listProducts',
       });
     });
 
-    it('should use CustomersDataSource for listCustomers resolver', () => {
+    it('should use ProductsDataSource for listProducts resolver', () => {
       // Arrange
       const app = new App();
       const tables = createMockDynamoDBStack(app);
@@ -67,15 +67,15 @@ describe('Customer Resolvers', () => {
       const template = Template.fromStack(stack);
 
       // Assert
-      // CustomersDataSourceを使用していることを確認
+      // ProductsDataSourceを使用していることを確認
       template.hasResourceProperties('AWS::AppSync::Resolver', {
         TypeName: 'Query',
-        FieldName: 'listCustomers',
-        DataSourceName: 'CustomersDataSource',
+        FieldName: 'listProducts',
+        DataSourceName: 'ProductsDataSource',
       });
     });
 
-    it('should use APPSYNC_JS runtime for listCustomers resolver', () => {
+    it('should use APPSYNC_JS runtime for listProducts resolver', () => {
       // Arrange
       const app = new App();
       const tables = createMockDynamoDBStack(app);
@@ -88,7 +88,7 @@ describe('Customer Resolvers', () => {
       // APPSYNC_JSランタイムを使用していることを確認
       template.hasResourceProperties('AWS::AppSync::Resolver', {
         TypeName: 'Query',
-        FieldName: 'listCustomers',
+        FieldName: 'listProducts',
         Runtime: {
           Name: 'APPSYNC_JS',
           RuntimeVersion: '1.0.0',
@@ -97,8 +97,8 @@ describe('Customer Resolvers', () => {
     });
   });
 
-  describe('getCustomer Resolver', () => {
-    it('should create getCustomer resolver attached to Query.getCustomer', () => {
+  describe('getProduct Resolver', () => {
+    it('should create getProduct resolver attached to Query.getProduct', () => {
       // Arrange
       const app = new App();
       const tables = createMockDynamoDBStack(app);
@@ -110,11 +110,11 @@ describe('Customer Resolvers', () => {
       // Assert
       template.hasResourceProperties('AWS::AppSync::Resolver', {
         TypeName: 'Query',
-        FieldName: 'getCustomer',
+        FieldName: 'getProduct',
       });
     });
 
-    it('should use CustomersDataSource for getCustomer resolver', () => {
+    it('should use ProductsDataSource for getProduct resolver', () => {
       // Arrange
       const app = new App();
       const tables = createMockDynamoDBStack(app);
@@ -126,12 +126,12 @@ describe('Customer Resolvers', () => {
       // Assert
       template.hasResourceProperties('AWS::AppSync::Resolver', {
         TypeName: 'Query',
-        FieldName: 'getCustomer',
-        DataSourceName: 'CustomersDataSource',
+        FieldName: 'getProduct',
+        DataSourceName: 'ProductsDataSource',
       });
     });
 
-    it('should use APPSYNC_JS runtime for getCustomer resolver', () => {
+    it('should use APPSYNC_JS runtime for getProduct resolver', () => {
       // Arrange
       const app = new App();
       const tables = createMockDynamoDBStack(app);
@@ -143,7 +143,7 @@ describe('Customer Resolvers', () => {
       // Assert
       template.hasResourceProperties('AWS::AppSync::Resolver', {
         TypeName: 'Query',
-        FieldName: 'getCustomer',
+        FieldName: 'getProduct',
         Runtime: {
           Name: 'APPSYNC_JS',
           RuntimeVersion: '1.0.0',
@@ -152,8 +152,8 @@ describe('Customer Resolvers', () => {
     });
   });
 
-  describe('createCustomer Resolver', () => {
-    it('should create createCustomer resolver attached to Mutation.createCustomer', () => {
+  describe('createProduct Resolver', () => {
+    it('should create createProduct resolver attached to Mutation.createProduct', () => {
       // Arrange
       const app = new App();
       const tables = createMockDynamoDBStack(app);
@@ -165,11 +165,11 @@ describe('Customer Resolvers', () => {
       // Assert
       template.hasResourceProperties('AWS::AppSync::Resolver', {
         TypeName: 'Mutation',
-        FieldName: 'createCustomer',
+        FieldName: 'createProduct',
       });
     });
 
-    it('should use CustomersDataSource for createCustomer resolver', () => {
+    it('should use ProductsDataSource for createProduct resolver', () => {
       // Arrange
       const app = new App();
       const tables = createMockDynamoDBStack(app);
@@ -181,12 +181,12 @@ describe('Customer Resolvers', () => {
       // Assert
       template.hasResourceProperties('AWS::AppSync::Resolver', {
         TypeName: 'Mutation',
-        FieldName: 'createCustomer',
-        DataSourceName: 'CustomersDataSource',
+        FieldName: 'createProduct',
+        DataSourceName: 'ProductsDataSource',
       });
     });
 
-    it('should use APPSYNC_JS runtime for createCustomer resolver', () => {
+    it('should use APPSYNC_JS runtime for createProduct resolver', () => {
       // Arrange
       const app = new App();
       const tables = createMockDynamoDBStack(app);
@@ -198,117 +198,7 @@ describe('Customer Resolvers', () => {
       // Assert
       template.hasResourceProperties('AWS::AppSync::Resolver', {
         TypeName: 'Mutation',
-        FieldName: 'createCustomer',
-        Runtime: {
-          Name: 'APPSYNC_JS',
-          RuntimeVersion: '1.0.0',
-        },
-      });
-    });
-  });
-
-  describe('searchCustomerByEmail Resolver', () => {
-    it('should create searchCustomerByEmail resolver attached to Query.searchCustomerByEmail', () => {
-      // Arrange
-      const app = new App();
-      const tables = createMockDynamoDBStack(app);
-
-      // Act
-      const stack = new AppSyncStack(app, 'TestAppSyncStack', tables);
-      const template = Template.fromStack(stack);
-
-      // Assert
-      template.hasResourceProperties('AWS::AppSync::Resolver', {
-        TypeName: 'Query',
-        FieldName: 'searchCustomerByEmail',
-      });
-    });
-
-    it('should use CustomersDataSource for searchCustomerByEmail resolver', () => {
-      // Arrange
-      const app = new App();
-      const tables = createMockDynamoDBStack(app);
-
-      // Act
-      const stack = new AppSyncStack(app, 'TestAppSyncStack', tables);
-      const template = Template.fromStack(stack);
-
-      // Assert
-      template.hasResourceProperties('AWS::AppSync::Resolver', {
-        TypeName: 'Query',
-        FieldName: 'searchCustomerByEmail',
-        DataSourceName: 'CustomersDataSource',
-      });
-    });
-
-    it('should use APPSYNC_JS runtime for searchCustomerByEmail resolver', () => {
-      // Arrange
-      const app = new App();
-      const tables = createMockDynamoDBStack(app);
-
-      // Act
-      const stack = new AppSyncStack(app, 'TestAppSyncStack', tables);
-      const template = Template.fromStack(stack);
-
-      // Assert
-      template.hasResourceProperties('AWS::AppSync::Resolver', {
-        TypeName: 'Query',
-        FieldName: 'searchCustomerByEmail',
-        Runtime: {
-          Name: 'APPSYNC_JS',
-          RuntimeVersion: '1.0.0',
-        },
-      });
-    });
-  });
-
-  describe('Customer.orders Field Resolver', () => {
-    it('should create Customer.orders field resolver attached to Customer.orders', () => {
-      // Arrange
-      const app = new App();
-      const tables = createMockDynamoDBStack(app);
-
-      // Act
-      const stack = new AppSyncStack(app, 'TestAppSyncStack', tables);
-      const template = Template.fromStack(stack);
-
-      // Assert
-      template.hasResourceProperties('AWS::AppSync::Resolver', {
-        TypeName: 'Customer',
-        FieldName: 'orders',
-      });
-    });
-
-    it('should use OrdersDataSource for Customer.orders field resolver', () => {
-      // Arrange
-      const app = new App();
-      const tables = createMockDynamoDBStack(app);
-
-      // Act
-      const stack = new AppSyncStack(app, 'TestAppSyncStack', tables);
-      const template = Template.fromStack(stack);
-
-      // Assert
-      template.hasResourceProperties('AWS::AppSync::Resolver', {
-        TypeName: 'Customer',
-        FieldName: 'orders',
-        DataSourceName: 'OrdersDataSource',
-      });
-    });
-
-    it('should use APPSYNC_JS runtime for Customer.orders field resolver', () => {
-      // Arrange
-      const app = new App();
-      const tables = createMockDynamoDBStack(app);
-
-      // Act
-      const stack = new AppSyncStack(app, 'TestAppSyncStack', tables);
-      const template = Template.fromStack(stack);
-
-      // Assert
-      template.hasResourceProperties('AWS::AppSync::Resolver', {
-        TypeName: 'Customer',
-        FieldName: 'orders',
+        FieldName: 'createProduct',
         Runtime: {
           Name: 'APPSYNC_JS',
           RuntimeVersion: '1.0.0',
@@ -318,7 +208,7 @@ describe('Customer Resolvers', () => {
   });
 
   describe('Resolver Count', () => {
-    it('should create exactly 5 customer-related resolvers (4 queries/mutations + 1 field resolver)', () => {
+    it('should create exactly 3 product-related resolvers', () => {
       // Arrange
       const app = new App();
       const tables = createMockDynamoDBStack(app);
@@ -328,22 +218,18 @@ describe('Customer Resolvers', () => {
       const template = Template.fromStack(stack);
 
       // Assert
-      // listCustomers、getCustomer、createCustomer、searchCustomerByEmail、Customer.ordersの5つのリゾルバーが作成される
+      // listProducts、getProduct、createProductの3つのリゾルバーが作成される
       const resolvers = template.findResources('AWS::AppSync::Resolver');
-      const customerResolvers = Object.values(resolvers).filter((resolver) => {
+      const productResolvers = Object.values(resolvers).filter((resolver) => {
         // biome-ignore lint/suspicious/noExplicitAny: CloudFormation template types are dynamic
         const fieldName = (resolver as any).Properties.FieldName;
-        // biome-ignore lint/suspicious/noExplicitAny: CloudFormation template types are dynamic
-        const typeName = (resolver as any).Properties.TypeName;
         return (
-          fieldName === 'listCustomers' ||
-          fieldName === 'getCustomer' ||
-          fieldName === 'createCustomer' ||
-          fieldName === 'searchCustomerByEmail' ||
-          (typeName === 'Customer' && fieldName === 'orders')
+          fieldName === 'listProducts' ||
+          fieldName === 'getProduct' ||
+          fieldName === 'createProduct'
         );
       });
-      expect(customerResolvers.length).toBe(5);
+      expect(productResolvers.length).toBe(3);
     });
   });
 });

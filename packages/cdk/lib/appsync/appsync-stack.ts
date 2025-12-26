@@ -57,14 +57,18 @@ export class AppSyncStack extends Stack {
     });
 
     // DynamoDBデータソースを作成
-    const customersDataSource = this.api.addDynamoDbDataSource('CustomersDataSource', customersTable);
-    // 将来のタスクで使用予定のデータソース
-    // @ts-expect-error - 将来の商品・注文リゾルバーで使用予定
+    const customersDataSource = this.api.addDynamoDbDataSource(
+      'CustomersDataSource',
+      customersTable,
+    );
     const productsDataSource = this.api.addDynamoDbDataSource('ProductsDataSource', productsTable);
-    // @ts-expect-error - 将来の注文リゾルバーで使用予定
+    // Task 4.3で使用開始（Customer.ordersフィールドリゾルバー）
     const ordersDataSource = this.api.addDynamoDbDataSource('OrdersDataSource', ordersTable);
     // @ts-expect-error - 将来の注文明細リゾルバーで使用予定
-    const orderItemsDataSource = this.api.addDynamoDbDataSource('OrderItemsDataSource', orderItemsTable);
+    const _orderItemsDataSource = this.api.addDynamoDbDataSource(
+      'OrderItemsDataSource',
+      orderItemsTable,
+    );
 
     // ===== 顧客管理リゾルバー =====
 
@@ -106,6 +110,50 @@ export class AppSyncStack extends Stack {
       dataSource: customersDataSource,
       runtime: FunctionRuntime.JS_1_0_0,
       code: Code.fromAsset(join(__dirname, 'resolvers/customers/searchCustomerByEmail.js')),
+    });
+
+    // ===== 商品カタログ管理リゾルバー =====
+
+    // Query.listProducts リゾルバー
+    new Resolver(this, 'ListProductsResolver', {
+      api: this.api,
+      typeName: 'Query',
+      fieldName: 'listProducts',
+      dataSource: productsDataSource,
+      runtime: FunctionRuntime.JS_1_0_0,
+      code: Code.fromAsset(join(__dirname, 'resolvers/products/listProducts.js')),
+    });
+
+    // Query.getProduct リゾルバー
+    new Resolver(this, 'GetProductResolver', {
+      api: this.api,
+      typeName: 'Query',
+      fieldName: 'getProduct',
+      dataSource: productsDataSource,
+      runtime: FunctionRuntime.JS_1_0_0,
+      code: Code.fromAsset(join(__dirname, 'resolvers/products/getProduct.js')),
+    });
+
+    // Mutation.createProduct リゾルバー
+    new Resolver(this, 'CreateProductResolver', {
+      api: this.api,
+      typeName: 'Mutation',
+      fieldName: 'createProduct',
+      dataSource: productsDataSource,
+      runtime: FunctionRuntime.JS_1_0_0,
+      code: Code.fromAsset(join(__dirname, 'resolvers/products/createProduct.js')),
+    });
+
+    // ===== フィールドリゾルバー =====
+
+    // Customer.orders フィールドリゾルバー
+    new Resolver(this, 'CustomerOrdersFieldResolver', {
+      api: this.api,
+      typeName: 'Customer',
+      fieldName: 'orders',
+      dataSource: ordersDataSource,
+      runtime: FunctionRuntime.JS_1_0_0,
+      code: Code.fromAsset(join(__dirname, 'resolvers/customers/Customer.orders.js')),
     });
 
     // CloudFormation Outputsでエンドポイントとキーを出力

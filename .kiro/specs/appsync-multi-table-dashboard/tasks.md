@@ -96,7 +96,7 @@
   - GSIクエリ失敗時はutil.error()でエラーを返し、部分データを返さない
   - _Requirements: 4.3, 3.5_
 
-- [ ] 4.3 顧客の注文履歴フィールドリゾルバー実装
+- [x] 4.3 顧客の注文履歴フィールドリゾルバー実装
   - packages/cdk/lib/appsync/resolvers/customers/Customer.orders.jsを作成
   - customer-order-gsiを使用したDynamoDB Queryオペレーションを実装
   - customerIdをパーティションキー、orderDateをソートキーとして注文リストを取得
@@ -106,7 +106,7 @@
 
 ### 5. 商品カタログ管理リゾルバー実装
 
-- [ ] 5.1 (P) 商品CRUD基本リゾルバー実装
+- [x] 5.1 (P) 商品CRUD基本リゾルバー実装
   - packages/cdk/lib/appsync/resolvers/products/listProducts.jsを作成
   - DynamoDB Scanオペレーションでlimit、nextTokenパラメータを処理
   - packages/cdk/lib/appsync/resolvers/products/getProduct.jsを作成

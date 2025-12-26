@@ -42,7 +42,7 @@ export function response(ctx) {
   // GSIクエリは複数結果を返す可能性があるが、最初の結果を返す
   // 仕様: メールアドレスは一意性を保証しないが、検索結果として最初のマッチを返す
   const items = ctx.result.items;
-  
+
   if (!items || items.length === 0) {
     return null;
   }
