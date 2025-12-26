@@ -71,7 +71,7 @@
   - CloudFormation OutputsでAPIエンドポイントとAPIキーを出力
   - _Requirements: 2.2, 2.3, 2.5, 2.6_
 
-- [ ] 3.3 DynamoDBデータソース接続
+- [x] 3.3 DynamoDBデータソース接続
   - AppSyncStack内で4テーブルそれぞれにDynamoDbDataSourceを作成
   - データソース名を'CustomersDataSource'、'ProductsDataSource'、'OrdersDataSource'、'OrderItemsDataSource'に設定
   - IAMロール自動生成により、各データソースが対応するテーブルへのReadWriteアクセスを持つことを確認
@@ -79,7 +79,7 @@
 
 ### 4. 顧客管理リゾルバー実装
 
-- [ ] 4.1 (P) 顧客CRUD基本リゾルバー実装
+- [x] 4.1 (P) 顧客CRUD基本リゾルバー実装
   - packages/cdk/lib/appsync/resolvers/customers/listCustomers.jsを作成(APPSYNC_JSランタイム)
   - DynamoDB Scanオペレーションでlimit、nextTokenパラメータを処理
   - packages/cdk/lib/appsync/resolvers/customers/getCustomer.jsを作成

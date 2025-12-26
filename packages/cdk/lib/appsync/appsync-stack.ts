@@ -1,7 +1,15 @@
 import { join } from 'node:path';
 import { CfnOutput, Stack } from 'aws-cdk-lib';
 import type { StackProps } from 'aws-cdk-lib';
-import { AuthorizationType, Definition, FieldLogLevel, GraphqlApi } from 'aws-cdk-lib/aws-appsync';
+import {
+  AuthorizationType,
+  Code,
+  Definition,
+  FieldLogLevel,
+  FunctionRuntime,
+  GraphqlApi,
+  Resolver,
+} from 'aws-cdk-lib/aws-appsync';
 import type { Table } from 'aws-cdk-lib/aws-dynamodb';
 import type { Construct } from 'constructs';
 
@@ -49,14 +57,42 @@ export class AppSyncStack extends Stack {
     });
 
     // DynamoDBデータソースを作成
-    // データソースはリゾルバー実装時（タスク3.3以降）に使用される
-    this.api.addDynamoDbDataSource('CustomersDataSource', customersTable);
+    const customersDataSource = this.api.addDynamoDbDataSource('CustomersDataSource', customersTable);
+    const productsDataSource = this.api.addDynamoDbDataSource('ProductsDataSource', productsTable);
+    const ordersDataSource = this.api.addDynamoDbDataSource('OrdersDataSource', ordersTable);
+    const orderItemsDataSource = this.api.addDynamoDbDataSource('OrderItemsDataSource', orderItemsTable);
 
-    this.api.addDynamoDbDataSource('ProductsDataSource', productsTable);
+    // ===== 顧客管理リゾルバー =====
 
-    this.api.addDynamoDbDataSource('OrdersDataSource', ordersTable);
+    // Query.listCustomers リゾルバー
+    new Resolver(this, 'ListCustomersResolver', {
+      api: this.api,
+      typeName: 'Query',
+      fieldName: 'listCustomers',
+      dataSource: customersDataSource,
+      runtime: FunctionRuntime.JS_1_0_0,
+      code: Code.fromAsset(join(__dirname, 'resolvers/customers/listCustomers.js')),
+    });
 
-    this.api.addDynamoDbDataSource('OrderItemsDataSource', orderItemsTable);
+    // Query.getCustomer リゾルバー
+    new Resolver(this, 'GetCustomerResolver', {
+      api: this.api,
+      typeName: 'Query',
+      fieldName: 'getCustomer',
+      dataSource: customersDataSource,
+      runtime: FunctionRuntime.JS_1_0_0,
+      code: Code.fromAsset(join(__dirname, 'resolvers/customers/getCustomer.js')),
+    });
+
+    // Mutation.createCustomer リゾルバー
+    new Resolver(this, 'CreateCustomerResolver', {
+      api: this.api,
+      typeName: 'Mutation',
+      fieldName: 'createCustomer',
+      dataSource: customersDataSource,
+      runtime: FunctionRuntime.JS_1_0_0,
+      code: Code.fromAsset(join(__dirname, 'resolvers/customers/createCustomer.js')),
+    });
 
     // CloudFormation Outputsでエンドポイントとキーを出力
     new CfnOutput(this, 'GraphQLApiUrl', {
