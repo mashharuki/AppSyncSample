@@ -1,0 +1,26 @@
+{
+  "name": "appsync-multi-table-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "AWS AppSync + DynamoDB Multi-Table Dashboard",
+  "scripts": {
+    "dev": "pnpm --filter frontend dev",
+    "build": "pnpm -r build",
+    "test": "pnpm -r test",
+    "lint": "biome check .",
+    "format": "biome format --write .",
+    "deploy": "pnpm --filter cdk deploy",
+    "synth": "pnpm --filter cdk synth",
+    "destroy": "pnpm --filter cdk destroy"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "typescript": "^5.7.2"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "packageManager": "pnpm@9.15.0"
+}
