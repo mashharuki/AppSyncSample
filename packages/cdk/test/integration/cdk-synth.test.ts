@@ -1,14 +1,11 @@
-import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { describe, expect, it } from 'vitest';
 
 describe('CDK Synth Integration Test', () => {
   it('should generate CloudFormation template with all required resources', () => {
     // cdk.outディレクトリからCloudFormationテンプレートを読み込む
-    const templatePath = join(
-      __dirname,
-      '../../cdk.out/AppSyncSampleDynamoDBStack.template.json',
-    );
+    const templatePath = join(__dirname, '../../cdk.out/AppSyncSampleDynamoDBStack.template.json');
     const template = JSON.parse(readFileSync(templatePath, 'utf-8'));
 
     // 4つのDynamoDBテーブルが定義されていることを確認
@@ -21,10 +18,7 @@ describe('CDK Synth Integration Test', () => {
   });
 
   it('should have all GSIs with ProjectionType ALL', () => {
-    const templatePath = join(
-      __dirname,
-      '../../cdk.out/AppSyncSampleDynamoDBStack.template.json',
-    );
+    const templatePath = join(__dirname, '../../cdk.out/AppSyncSampleDynamoDBStack.template.json');
     const template = JSON.parse(readFileSync(templatePath, 'utf-8'));
 
     const resources = template.Resources;
@@ -46,10 +40,7 @@ describe('CDK Synth Integration Test', () => {
   });
 
   it('should have DeletionPolicy Retain on all tables', () => {
-    const templatePath = join(
-      __dirname,
-      '../../cdk.out/AppSyncSampleDynamoDBStack.template.json',
-    );
+    const templatePath = join(__dirname, '../../cdk.out/AppSyncSampleDynamoDBStack.template.json');
     const template = JSON.parse(readFileSync(templatePath, 'utf-8'));
 
     const resources = template.Resources;
@@ -65,10 +56,7 @@ describe('CDK Synth Integration Test', () => {
   });
 
   it('should have 4 CloudFormation Outputs', () => {
-    const templatePath = join(
-      __dirname,
-      '../../cdk.out/AppSyncSampleDynamoDBStack.template.json',
-    );
+    const templatePath = join(__dirname, '../../cdk.out/AppSyncSampleDynamoDBStack.template.json');
     const template = JSON.parse(readFileSync(templatePath, 'utf-8'));
 
     const outputs = template.Outputs;
@@ -85,10 +73,7 @@ describe('CDK Synth Integration Test', () => {
   });
 
   it('should have BillingMode PAY_PER_REQUEST on all tables', () => {
-    const templatePath = join(
-      __dirname,
-      '../../cdk.out/AppSyncSampleDynamoDBStack.template.json',
-    );
+    const templatePath = join(__dirname, '../../cdk.out/AppSyncSampleDynamoDBStack.template.json');
     const template = JSON.parse(readFileSync(templatePath, 'utf-8'));
 
     const resources = template.Resources;

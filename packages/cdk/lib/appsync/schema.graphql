@@ -1,0 +1,127 @@
+# Customer Types
+type Customer {
+  customerId: ID!
+  name: String!
+  email: String!
+  orders: [Order!]!
+}
+
+type CustomerConnection {
+  items: [Customer!]!
+  nextToken: String
+}
+
+input CreateCustomerInput {
+  name: String!
+  email: String!
+}
+
+# Product Types
+type Product {
+  productId: ID!
+  name: String!
+  category: String!
+  price: Float!
+  description: String
+}
+
+type ProductConnection {
+  items: [Product!]!
+  nextToken: String
+}
+
+input CreateProductInput {
+  name: String!
+  category: String!
+  price: Float!
+  description: String
+}
+
+# Order Types
+type Order {
+  orderId: ID!
+  customerId: ID!
+  customer: Customer!
+  orderDate: String!
+  totalAmount: Float!
+  status: String!
+  orderItems: [OrderItem!]!
+}
+
+type OrderConnection {
+  items: [Order!]!
+  nextToken: String
+}
+
+input CreateOrderInput {
+  customerId: ID!
+  orderItems: [CreateOrderItemInput!]!
+}
+
+# OrderItem Types
+type OrderItem {
+  orderItemId: ID!
+  orderId: ID!
+  productId: ID!
+  quantity: Int!
+  unitPrice: Float!
+  product: Product!
+}
+
+input CreateOrderItemInput {
+  productId: ID!
+  quantity: Int!
+}
+
+# Analytics Types
+type SalesSummary {
+  totalRevenue: Float!
+  orderCount: Int!
+  averageOrderValue: Float!
+}
+
+type ProductRanking {
+  productId: ID!
+  productName: String!
+  totalQuantity: Int!
+}
+
+type CustomerStats {
+  totalCustomers: Int!
+  activeCustomers: Int!
+}
+
+# Query Type
+type Query {
+  # Customer queries
+  listCustomers(limit: Int, nextToken: String): CustomerConnection!
+  getCustomer(customerId: ID!): Customer
+  searchCustomerByEmail(email: String!): Customer
+
+  # Product queries
+  listProducts(limit: Int, nextToken: String): ProductConnection!
+  getProduct(productId: ID!): Product
+  listProductsByCategory(category: String!, limit: Int, nextToken: String): ProductConnection!
+
+  # Order queries
+  listOrders(limit: Int, nextToken: String): OrderConnection!
+  getOrder(orderId: ID!): Order
+  listOrdersByCustomer(customerId: ID!, limit: Int, nextToken: String): OrderConnection!
+
+  # Analytics queries
+  getSalesSummary: SalesSummary!
+  getProductRanking(limit: Int): [ProductRanking!]!
+  getCustomerStats: CustomerStats!
+}
+
+# Mutation Type
+type Mutation {
+  createCustomer(input: CreateCustomerInput!): Customer!
+  createProduct(input: CreateProductInput!): Product!
+  createOrder(input: CreateOrderInput!): Order!
+}
+
+schema {
+  query: Query
+  mutation: Mutation
+}

@@ -1,11 +1,11 @@
-import { describe, it, expect } from 'vitest';
 import { App, Stack } from 'aws-cdk-lib';
 import { Template } from 'aws-cdk-lib/assertions';
+import { describe, expect, it } from 'vitest';
 import {
   createCustomersTable,
-  createProductsTable,
-  createOrdersTable,
   createOrderItemsTable,
+  createOrdersTable,
+  createProductsTable,
 } from '../../lib/dynamodb/tables';
 
 describe('DynamoDB Tables', () => {

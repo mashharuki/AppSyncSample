@@ -1,12 +1,12 @@
-import { Stack, CfnOutput } from 'aws-cdk-lib';
+import { CfnOutput, Stack } from 'aws-cdk-lib';
 import type { StackProps } from 'aws-cdk-lib';
 import type { Table } from 'aws-cdk-lib/aws-dynamodb';
 import type { Construct } from 'constructs';
 import {
   createCustomersTable,
-  createProductsTable,
-  createOrdersTable,
   createOrderItemsTable,
+  createOrdersTable,
+  createProductsTable,
 } from './tables';
 
 /**

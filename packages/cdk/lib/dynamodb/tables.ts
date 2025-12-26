@@ -1,21 +1,13 @@
 import { RemovalPolicy } from 'aws-cdk-lib';
-import {
-  Table,
-  AttributeType,
-  BillingMode,
-  ProjectionType,
-} from 'aws-cdk-lib/aws-dynamodb';
-import { Construct } from 'constructs';
+import { AttributeType, BillingMode, ProjectionType, Table } from 'aws-cdk-lib/aws-dynamodb';
+import type { Construct } from 'constructs';
 
 /**
  * Customersテーブルを作成
  * - PK: customerId, SK: customerId
  * - GSI: email-gsi (PK: email)
  */
-export function createCustomersTable(
-  scope: Construct,
-  id: string,
-): Table {
+export function createCustomersTable(scope: Construct, id: string): Table {
   const table = new Table(scope, id, {
     tableName: 'Customers',
     partitionKey: {
@@ -48,10 +40,7 @@ export function createCustomersTable(
  * - PK: productId, SK: productId
  * - GSI: category-gsi (PK: category)
  */
-export function createProductsTable(
-  scope: Construct,
-  id: string,
-): Table {
+export function createProductsTable(scope: Construct, id: string): Table {
   const table = new Table(scope, id, {
     tableName: 'Products',
     partitionKey: {
@@ -84,10 +73,7 @@ export function createProductsTable(
  * - PK: orderId, SK: orderId
  * - GSI: customer-order-gsi (PK: customerId, SK: orderDate)
  */
-export function createOrdersTable(
-  scope: Construct,
-  id: string,
-): Table {
+export function createOrdersTable(scope: Construct, id: string): Table {
   const table = new Table(scope, id, {
     tableName: 'Orders',
     partitionKey: {
@@ -124,10 +110,7 @@ export function createOrdersTable(
  * - PK: orderItemId, SK: orderItemId
  * - GSI: product-sales-gsi (PK: productId)
  */
-export function createOrderItemsTable(
-  scope: Construct,
-  id: string,
-): Table {
+export function createOrderItemsTable(scope: Construct, id: string): Table {
   const table = new Table(scope, id, {
     tableName: 'OrderItems',
     partitionKey: {

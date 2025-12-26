@@ -40,6 +40,9 @@ Kiro-style Spec Driven Development implementation on AI-DLC (AI Development Life
 - Human review required each phase; use `-y` only for intentional fast-track
 - Keep steering current and verify alignment with `/kiro:spec-status`
 - Follow the user's instructions precisely, and within that scope act autonomously: gather the necessary context and complete the requested work end-to-end in this run, asking questions only when essential information is missing or the instructions are critically ambiguous.
+- タスクを一つ消化したらSerenaのメモリーを最新化してください。
+- また後続するタスクに変更すべき点がないかどうか必ず考慮するようにしてください。
+  - もしある場合にはその内容を私に説明し、承認した場合には後続のタスクを更新してください。
 
 ## Steering Configuration
 - Load entire `.kiro/steering/` as project memory

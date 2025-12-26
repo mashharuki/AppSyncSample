@@ -1,14 +1,14 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import type {
   Customer,
-  Product,
+  CustomerStats,
   Order,
   OrderItem,
-  SalesSummary,
+  Product,
   ProductRanking,
-  CustomerStats,
+  SalesSummary,
 } from '../types';
-import { isValidUUID, isValidEmail, isValidPrice } from '../types/validators';
+import { isValidEmail, isValidPrice, isValidUUID } from '../types/validators';
 
 describe('Domain Types', () => {
   describe('Customer Type', () => {

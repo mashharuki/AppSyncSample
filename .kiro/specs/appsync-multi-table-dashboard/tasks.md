@@ -52,7 +52,7 @@
 
 ### 3. AppSync GraphQL APIインフラストラクチャ構築
 
-- [ ] 3.1 GraphQLスキーマ定義
+- [x] 3.1 GraphQLスキーマ定義
   - packages/cdk/lib/appsync/schema.graphqlを作成
   - Query型を定義(listCustomers, getCustomer, searchCustomerByEmail, listProducts, getProduct, listProductsByCategory, listOrders, getOrder, listOrdersByCustomer, getSalesSummary, getProductRanking, getCustomerStats)
   - Mutation型を定義(createCustomer, createProduct, createOrder)
@@ -61,10 +61,10 @@
   - CreateCustomerInput、CreateProductInput、CreateOrderInput、CreateOrderItemInput型を定義
   - _Requirements: 2.1_
 
-- [ ] 3.2 AppSyncスタッククラス実装
+- [x] 3.2 AppSyncスタッククラス実装
   - packages/cdk/lib/appsync/appsync-stack.tsを作成
   - AppSyncStackクラスでDynamoDBテーブル4つをpropsとして受け取る
-  - GraphqlApi Constructでschema.graphqlを読み込み(SchemaFile.fromAsset)
+  - GraphqlApi Constructでschema.graphqlを読み込み(Definition.fromFile - 新しいAPI使用)
   - API_KEY認証モードを設定(authorizationConfig)
   - CloudWatch Logsを有効化(logConfig: { fieldLogLevel: FieldLogLevel.ALL })
   - CORS設定を追加(allowOrigins: ['*']、学習環境のため)

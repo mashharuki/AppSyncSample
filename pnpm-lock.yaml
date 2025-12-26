@@ -28,16 +28,19 @@ importers:
         version: 0.5.21
     devDependencies:
       '@types/node':
-        specifier: ^20.0.0
+        specifier: ^20.19.27
         version: 20.19.27
       aws-cdk:
         specifier: ^2.150.0
         version: 2.1100.1
+      graphql:
+        specifier: ^16.12.0
+        version: 16.12.0
       typescript:
         specifier: ~5.3.0
         version: 5.3.3
       vitest:
-        specifier: ^1.0.0
+        specifier: ^1.6.1
         version: 1.6.1(@types/node@20.19.27)
 
   packages/shared:
@@ -504,6 +507,10 @@ packages:
   get-stream@8.0.1:
     resolution: {integrity: sha512-VaUJspBffn/LMCJVoMvSAdmscJyS1auj5Zulnn5UoYcY531UWmdwhRWkcGKnGU93m5HSXP9LP2usOryrBtQowA==}
     engines: {node: '>=16'}
+
+  graphql@16.12.0:
+    resolution: {integrity: sha512-DKKrynuQRne0PNpEbzuEdHlYOMksHSUI8Zc9Unei5gTsMNA2/vMpoMz/yKba50pejK56qj98qM0SjYxAKi13gQ==}
+    engines: {node: ^12.22.0 || ^14.16.0 || ^16.0.0 || >=17.0.0}
 
   human-signals@5.0.0:
     resolution: {integrity: sha512-AXcZb6vzzrFAUE61HnN4mpLqd/cSIwNQjtNWR0euPm6y0iqx3G4gOXaIDdtdDwZmhwe82LA6+zinmW4UBWVePQ==}
@@ -1074,6 +1081,8 @@ snapshots:
   get-func-name@2.0.2: {}
 
   get-stream@8.0.1: {}
+
+  graphql@16.12.0: {}
 
   human-signals@5.0.0: {}
 
