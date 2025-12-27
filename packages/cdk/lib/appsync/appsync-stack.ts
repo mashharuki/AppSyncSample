@@ -268,6 +268,16 @@ export class AppSyncStack extends Stack {
       code: Code.fromAsset(join(__dirname, 'resolvers/analytics/getSalesSummary.js')),
     });
 
+    // Query.getCustomerStats リゾルバー
+    new Resolver(this, 'GetCustomerStatsResolver', {
+      api: this.api,
+      typeName: 'Query',
+      fieldName: 'getCustomerStats',
+      dataSource: customersDataSource,
+      runtime: FunctionRuntime.JS_1_0_0,
+      code: Code.fromAsset(join(__dirname, 'resolvers/analytics/getCustomerStats.js')),
+    });
+
     // CloudFormation Outputsでエンドポイントとキーを出力
     new CfnOutput(this, 'GraphQLApiUrl', {
       value: this.api.graphqlUrl,

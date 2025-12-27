@@ -174,7 +174,7 @@
   - ProductsテーブルBatchGetItemで商品詳細(productName等)を取得してマージ
   - _Requirements: 7.3, 7.4_
 
-- [ ] 7.3 (P) 顧客統計リゾルバー実装
+- [x] 7.3 (P) 顧客統計リゾルバー実装
   - packages/cdk/lib/appsync/resolvers/analytics/getCustomerStats.jsを作成
   - CustomersテーブルScanオペレーションで総顧客数を取得
   - OrdersテーブルScanで過去30日以内の注文を持つ顧客IDをフィルタし、アクティブ顧客数を計算

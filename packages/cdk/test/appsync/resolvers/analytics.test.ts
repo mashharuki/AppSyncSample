@@ -118,4 +118,82 @@ describe('Analytics Resolvers', () => {
       expect(getSalesSummaryResolver).toBeDefined();
     });
   });
+
+  describe('getCustomerStats Resolver (Task 7.3)', () => {
+    it('should create getCustomerStats resolver attached to Query.getCustomerStats', () => {
+      // Arrange
+      const app = new App();
+      const tables = createMockDynamoDBStack(app);
+
+      // Act
+      const stack = new AppSyncStack(app, 'TestAppSyncStack', tables);
+      const template = Template.fromStack(stack);
+
+      // Assert
+      // getCustomerStatsリゾルバーが作成されていることを確認
+      template.hasResourceProperties('AWS::AppSync::Resolver', {
+        TypeName: 'Query',
+        FieldName: 'getCustomerStats',
+      });
+    });
+
+    it('should use CustomersDataSource for getCustomerStats resolver', () => {
+      // Arrange
+      const app = new App();
+      const tables = createMockDynamoDBStack(app);
+
+      // Act
+      const stack = new AppSyncStack(app, 'TestAppSyncStack', tables);
+      const template = Template.fromStack(stack);
+
+      // Assert
+      // CustomersDataSourceを使用していることを確認
+      template.hasResourceProperties('AWS::AppSync::Resolver', {
+        TypeName: 'Query',
+        FieldName: 'getCustomerStats',
+        DataSourceName: 'CustomersDataSource',
+      });
+    });
+
+    it('should use APPSYNC_JS runtime for getCustomerStats resolver', () => {
+      // Arrange
+      const app = new App();
+      const tables = createMockDynamoDBStack(app);
+
+      // Act
+      const stack = new AppSyncStack(app, 'TestAppSyncStack', tables);
+      const template = Template.fromStack(stack);
+
+      // Assert
+      // APPSYNC_JSランタイムを使用していることを確認
+      template.hasResourceProperties('AWS::AppSync::Resolver', {
+        TypeName: 'Query',
+        FieldName: 'getCustomerStats',
+        Runtime: {
+          Name: 'APPSYNC_JS',
+          RuntimeVersion: '1.0.0',
+        },
+      });
+    });
+
+    it('should have code file at resolvers/analytics/getCustomerStats.js', () => {
+      // Arrange
+      const app = new App();
+      const tables = createMockDynamoDBStack(app);
+
+      // Act
+      const stack = new AppSyncStack(app, 'TestAppSyncStack', tables);
+      const template = Template.fromStack(stack);
+
+      // Assert
+      // resolvers/analytics/getCustomerStats.jsファイルが指定されていることを確認
+      const resolvers = template.findResources('AWS::AppSync::Resolver');
+      const getCustomerStatsResolver = Object.values(resolvers).find((resolver) => {
+        // biome-ignore lint/suspicious/noExplicitAny: CloudFormation template types are dynamic
+        const props = (resolver as any).Properties;
+        return props.TypeName === 'Query' && props.FieldName === 'getCustomerStats';
+      });
+      expect(getCustomerStatsResolver).toBeDefined();
+    });
+  });
 });
