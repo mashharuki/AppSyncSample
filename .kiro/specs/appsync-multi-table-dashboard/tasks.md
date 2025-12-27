@@ -134,7 +134,7 @@
   - customerIdをパーティションキー、orderDateをソートキーとして注文リストを取得
   - _Requirements: 6.1, 6.3_
 
-- [ ] 6.2 注文作成ミューテーション実装
+- [x] 6.2 注文作成ミューテーション実装
   - packages/cdk/lib/appsync/resolvers/orders/createOrder.jsを作成
   - UUID v4でorderIdを自動生成し、作成日時をISO 8601形式で記録
   - customerId存在チェックをCustomersテーブルGetItemで実行
@@ -145,7 +145,7 @@
   - トランザクション境界の制約により、OrderとOrderItemsは別トランザクションで保存(最終整合性)
   - _Requirements: 6.4, 6.5, 6.7_
 
-- [ ] 6.3 注文詳細Pipeline Resolver実装
+- [x] 6.3 注文詳細Pipeline Resolver実装
   - packages/cdk/lib/appsync/resolvers/orders/getOrder/以下に複数ステップのリゾルバーを作成
   - before.jsでcontext準備(orderIdをstashに保存)
   - function-1-getOrder.jsでOrdersテーブルGetItemを実行、結果をstash.orderに保存
@@ -319,6 +319,26 @@
   - 商品ランキングに作成した商品が表示されることを確認
   - CloudWatch Logsでリクエスト・レスポンスが記録されていることを確認
   - _Requirements: 3.1, 3.2, 3.3, 3.4_
+
+- [ ] 13.4 CodeRabbitとGitHub Actionsの設定ファイルの追加
+  - 最適なCodeRabbitの設定ファイルを作成する
+  - 最適なGitHub Actionsの設定ファイルを追加する
+    - 各コンポーネントのビルド・テストを実行するCIパイプライン用のyamlファイルを追加する
+
+- [ ] 13.5 ドキュメントの整備
+  - READMEをアップグレードする(以下の内容を網羅的かつわかりやすい高品質なドキュメントとして作成する)
+    - システムの概要
+    - システム構成図
+    - システムで提供している機能
+    - 処理シーケンス図
+    - 技術スタック
+    - 動かし方
+      - Claude Code + cc-sddでSpec駆動開発を実行する方法(既存のものを流用)
+      - mcpの設定ファイルを指定して起動する方法(既存のものを流用)
+      - セットアップ 
+      - コンパイル、テスト方法
+      - ローカルでの起動方法
+      - AWSへのデプロイ方法
 
 ---
 

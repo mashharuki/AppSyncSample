@@ -135,5 +135,15 @@ export function createOrderItemsTable(scope: Construct, id: string): Table {
     projectionType: ProjectionType.ALL,
   });
 
+  // Order Items GSI (for querying by orderId)
+  table.addGlobalSecondaryIndex({
+    indexName: 'order-items-gsi',
+    partitionKey: {
+      name: 'orderId',
+      type: AttributeType.STRING,
+    },
+    projectionType: ProjectionType.ALL,
+  });
+
   return table;
 }

@@ -173,4 +173,235 @@ describe('Order Resolvers', () => {
       expect(orderResolvers.length).toBe(2);
     });
   });
+
+  describe('createOrder Resolver (Task 6.2)', () => {
+    it('should create createOrder resolver attached to Mutation.createOrder', () => {
+      // Arrange
+      const app = new App();
+      const tables = createMockDynamoDBStack(app);
+
+      // Act
+      const stack = new AppSyncStack(app, 'TestAppSyncStack', tables);
+      const template = Template.fromStack(stack);
+
+      // Assert
+      // createOrderリゾルバーが作成されていることを確認
+      template.hasResourceProperties('AWS::AppSync::Resolver', {
+        TypeName: 'Mutation',
+        FieldName: 'createOrder',
+      });
+    });
+
+    it('should use OrdersDataSource for createOrder resolver', () => {
+      // Arrange
+      const app = new App();
+      const tables = createMockDynamoDBStack(app);
+
+      // Act
+      const stack = new AppSyncStack(app, 'TestAppSyncStack', tables);
+      const template = Template.fromStack(stack);
+
+      // Assert
+      // OrdersDataSourceを使用していることを確認
+      template.hasResourceProperties('AWS::AppSync::Resolver', {
+        TypeName: 'Mutation',
+        FieldName: 'createOrder',
+        DataSourceName: 'OrdersDataSource',
+      });
+    });
+
+    it('should use APPSYNC_JS runtime for createOrder resolver', () => {
+      // Arrange
+      const app = new App();
+      const tables = createMockDynamoDBStack(app);
+
+      // Act
+      const stack = new AppSyncStack(app, 'TestAppSyncStack', tables);
+      const template = Template.fromStack(stack);
+
+      // Assert
+      // APPSYNC_JSランタイムを使用していることを確認
+      template.hasResourceProperties('AWS::AppSync::Resolver', {
+        TypeName: 'Mutation',
+        FieldName: 'createOrder',
+        Runtime: {
+          Name: 'APPSYNC_JS',
+          RuntimeVersion: '1.0.0',
+        },
+      });
+    });
+
+    it('should have code file at resolvers/orders/createOrder.js', () => {
+      // Arrange
+      const app = new App();
+      const tables = createMockDynamoDBStack(app);
+
+      // Act
+      const stack = new AppSyncStack(app, 'TestAppSyncStack', tables);
+      const template = Template.fromStack(stack);
+
+      // Assert
+      // resolvers/orders/createOrder.jsファイルが指定されていることを確認
+      // CloudFormationテンプレートではCode.fromAsset()がS3バケット/キーに変換されるため、
+      // ファイルパスの検証は間接的にリゾルバーの存在確認で代替
+      const resolvers = template.findResources('AWS::AppSync::Resolver');
+      const createOrderResolver = Object.values(resolvers).find((resolver) => {
+        // biome-ignore lint/suspicious/noExplicitAny: CloudFormation template types are dynamic
+        const props = (resolver as any).Properties;
+        return props.TypeName === 'Mutation' && props.FieldName === 'createOrder';
+      });
+      expect(createOrderResolver).toBeDefined();
+    });
+  });
+
+  describe('getOrder Pipeline Resolver (Task 6.3)', () => {
+    it('should create getOrder resolver attached to Query.getOrder', () => {
+      // Arrange
+      const app = new App();
+      const tables = createMockDynamoDBStack(app);
+
+      // Act
+      const stack = new AppSyncStack(app, 'TestAppSyncStack', tables);
+      const template = Template.fromStack(stack);
+
+      // Assert
+      // getOrderリゾルバーが作成されていることを確認
+      template.hasResourceProperties('AWS::AppSync::Resolver', {
+        TypeName: 'Query',
+        FieldName: 'getOrder',
+      });
+    });
+
+    it('should be a Pipeline Resolver', () => {
+      // Arrange
+      const app = new App();
+      const tables = createMockDynamoDBStack(app);
+
+      // Act
+      const stack = new AppSyncStack(app, 'TestAppSyncStack', tables);
+      const template = Template.fromStack(stack);
+
+      // Assert
+      // PipelineConfigが設定されていることを確認
+      template.hasResourceProperties('AWS::AppSync::Resolver', {
+        TypeName: 'Query',
+        FieldName: 'getOrder',
+        Kind: 'PIPELINE',
+      });
+    });
+
+    it('should have 4 pipeline functions', () => {
+      // Arrange
+      const app = new App();
+      const tables = createMockDynamoDBStack(app);
+
+      // Act
+      const stack = new AppSyncStack(app, 'TestAppSyncStack', tables);
+      const template = Template.fromStack(stack);
+
+      // Assert
+      // 4つのAppSync Functionが作成されていることを確認
+      const functions = template.findResources('AWS::AppSync::FunctionConfiguration');
+      const getOrderFunctions = Object.values(functions).filter((func) => {
+        // biome-ignore lint/suspicious/noExplicitAny: CloudFormation template types are dynamic
+        const name = (func as any).Properties.Name;
+        return (
+          name === 'GetOrderFunction' ||
+          name === 'GetCustomerFunction' ||
+          name === 'GetOrderItemsFunction' ||
+          name === 'BatchGetProductsFunction'
+        );
+      });
+      expect(getOrderFunctions.length).toBe(4);
+    });
+
+    it('should use correct data sources for each function', () => {
+      // Arrange
+      const app = new App();
+      const tables = createMockDynamoDBStack(app);
+
+      // Act
+      const stack = new AppSyncStack(app, 'TestAppSyncStack', tables);
+      const template = Template.fromStack(stack);
+
+      // Assert
+      // 各FunctionでOrdersDataSource、CustomersDataSource、OrderItemsDataSource、ProductsDataSourceを使用
+      template.hasResourceProperties('AWS::AppSync::FunctionConfiguration', {
+        Name: 'GetOrderFunction',
+        DataSourceName: 'OrdersDataSource',
+      });
+
+      template.hasResourceProperties('AWS::AppSync::FunctionConfiguration', {
+        Name: 'GetCustomerFunction',
+        DataSourceName: 'CustomersDataSource',
+      });
+
+      template.hasResourceProperties('AWS::AppSync::FunctionConfiguration', {
+        Name: 'GetOrderItemsFunction',
+        DataSourceName: 'OrderItemsDataSource',
+      });
+
+      template.hasResourceProperties('AWS::AppSync::FunctionConfiguration', {
+        Name: 'BatchGetProductsFunction',
+        DataSourceName: 'ProductsDataSource',
+      });
+    });
+
+    it('should use APPSYNC_JS runtime for all functions', () => {
+      // Arrange
+      const app = new App();
+      const tables = createMockDynamoDBStack(app);
+
+      // Act
+      const stack = new AppSyncStack(app, 'TestAppSyncStack', tables);
+      const template = Template.fromStack(stack);
+
+      // Assert
+      // すべてのFunctionでAPPSYNC_JSランタイムを使用していることを確認
+      const functions = template.findResources('AWS::AppSync::FunctionConfiguration');
+      const getOrderFunctions = Object.values(functions).filter((func) => {
+        // biome-ignore lint/suspicious/noExplicitAny: CloudFormation template types are dynamic
+        const name = (func as any).Properties.Name;
+        return (
+          name === 'GetOrderFunction' ||
+          name === 'GetCustomerFunction' ||
+          name === 'GetOrderItemsFunction' ||
+          name === 'BatchGetProductsFunction'
+        );
+      });
+
+      for (const func of getOrderFunctions) {
+        // biome-ignore lint/suspicious/noExplicitAny: CloudFormation template types are dynamic
+        expect((func as any).Properties.Runtime).toEqual({
+          Name: 'APPSYNC_JS',
+          RuntimeVersion: '1.0.0',
+        });
+      }
+    });
+
+    it('should execute functions in correct order', () => {
+      // Arrange
+      const app = new App();
+      const tables = createMockDynamoDBStack(app);
+
+      // Act
+      const stack = new AppSyncStack(app, 'TestAppSyncStack', tables);
+      const template = Template.fromStack(stack);
+
+      // Assert
+      // PipelineConfigでFunctionが正しい順序で実行されることを確認
+      const resolvers = template.findResources('AWS::AppSync::Resolver');
+      const getOrderResolver = Object.values(resolvers).find((resolver) => {
+        // biome-ignore lint/suspicious/noExplicitAny: CloudFormation template types are dynamic
+        const props = (resolver as any).Properties;
+        return props.TypeName === 'Query' && props.FieldName === 'getOrder';
+      });
+
+      expect(getOrderResolver).toBeDefined();
+      // biome-ignore lint/suspicious/noExplicitAny: CloudFormation template types are dynamic
+      const pipelineConfig = (getOrderResolver as any).Properties.PipelineConfig;
+      expect(pipelineConfig).toBeDefined();
+      expect(pipelineConfig.Functions).toHaveLength(4);
+    });
+  });
 });

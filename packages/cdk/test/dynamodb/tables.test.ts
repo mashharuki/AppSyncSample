@@ -207,6 +207,10 @@ describe('DynamoDB Tables', () => {
             AttributeName: 'productId',
             AttributeType: 'S',
           },
+          {
+            AttributeName: 'orderId',
+            AttributeType: 'S',
+          },
         ],
         KeySchema: [
           {
@@ -224,6 +228,18 @@ describe('DynamoDB Tables', () => {
             KeySchema: [
               {
                 AttributeName: 'productId',
+                KeyType: 'HASH',
+              },
+            ],
+            Projection: {
+              ProjectionType: 'ALL',
+            },
+          },
+          {
+            IndexName: 'order-items-gsi',
+            KeySchema: [
+              {
+                AttributeName: 'orderId',
                 KeyType: 'HASH',
               },
             ],

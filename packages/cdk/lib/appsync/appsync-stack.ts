@@ -2,6 +2,7 @@ import { join } from 'node:path';
 import { CfnOutput, Stack } from 'aws-cdk-lib';
 import type { StackProps } from 'aws-cdk-lib';
 import {
+  AppsyncFunction,
   AuthorizationType,
   Code,
   Definition,
@@ -64,8 +65,8 @@ export class AppSyncStack extends Stack {
     const productsDataSource = this.api.addDynamoDbDataSource('ProductsDataSource', productsTable);
     // Task 4.3で使用開始（Customer.ordersフィールドリゾルバー）
     const ordersDataSource = this.api.addDynamoDbDataSource('OrdersDataSource', ordersTable);
-    // @ts-expect-error - 将来の注文明細リゾルバーで使用予定
-    const _orderItemsDataSource = this.api.addDynamoDbDataSource(
+    // Task 6.3で使用開始（getOrder Pipeline Resolver）
+    const orderItemsDataSource = this.api.addDynamoDbDataSource(
       'OrderItemsDataSource',
       orderItemsTable,
     );
@@ -174,6 +175,71 @@ export class AppSyncStack extends Stack {
       dataSource: ordersDataSource,
       runtime: FunctionRuntime.JS_1_0_0,
       code: Code.fromAsset(join(__dirname, 'resolvers/orders/listOrdersByCustomer.js')),
+    });
+
+    // Mutation.createOrder リゾルバー
+    new Resolver(this, 'CreateOrderResolver', {
+      api: this.api,
+      typeName: 'Mutation',
+      fieldName: 'createOrder',
+      dataSource: ordersDataSource,
+      runtime: FunctionRuntime.JS_1_0_0,
+      code: Code.fromAsset(join(__dirname, 'resolvers/orders/createOrder.js')),
+    });
+
+    // ===== Pipeline Resolver: Query.getOrder =====
+
+    // Function 1: GetOrder
+    const getOrderFunction = new AppsyncFunction(this, 'GetOrderFunction', {
+      name: 'GetOrderFunction',
+      api: this.api,
+      dataSource: ordersDataSource,
+      runtime: FunctionRuntime.JS_1_0_0,
+      code: Code.fromAsset(join(__dirname, 'resolvers/orders/getOrder/function-1-getOrder.js')),
+    });
+
+    // Function 2: GetCustomer
+    const getCustomerFunction = new AppsyncFunction(this, 'GetCustomerFunction', {
+      name: 'GetCustomerFunction',
+      api: this.api,
+      dataSource: customersDataSource,
+      runtime: FunctionRuntime.JS_1_0_0,
+      code: Code.fromAsset(join(__dirname, 'resolvers/orders/getOrder/function-2-getCustomer.js')),
+    });
+
+    // Function 3: GetOrderItems
+    const getOrderItemsFunction = new AppsyncFunction(this, 'GetOrderItemsFunction', {
+      name: 'GetOrderItemsFunction',
+      api: this.api,
+      dataSource: orderItemsDataSource,
+      runtime: FunctionRuntime.JS_1_0_0,
+      code: Code.fromAsset(join(__dirname, 'resolvers/orders/getOrder/function-3-getOrderItems.js')),
+    });
+
+    // Function 4: BatchGetProducts
+    const batchGetProductsFunction = new AppsyncFunction(this, 'BatchGetProductsFunction', {
+      name: 'BatchGetProductsFunction',
+      api: this.api,
+      dataSource: productsDataSource,
+      runtime: FunctionRuntime.JS_1_0_0,
+      code: Code.fromAsset(
+        join(__dirname, 'resolvers/orders/getOrder/function-4-batchGetProducts.js'),
+      ),
+    });
+
+    // Query.getOrder Pipeline Resolver
+    new Resolver(this, 'GetOrderResolver', {
+      api: this.api,
+      typeName: 'Query',
+      fieldName: 'getOrder',
+      runtime: FunctionRuntime.JS_1_0_0,
+      pipelineConfig: [
+        getOrderFunction,
+        getCustomerFunction,
+        getOrderItemsFunction,
+        batchGetProductsFunction,
+      ],
+      code: Code.fromAsset(join(__dirname, 'resolvers/orders/getOrder/pipeline.js')),
     });
 
     // ===== フィールドリゾルバー =====
