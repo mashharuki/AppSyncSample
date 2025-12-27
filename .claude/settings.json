@@ -10,9 +10,13 @@
       "Bash(npm run test:*)",
       "Read(~/.zshrc)"
     ],
-    "deny": ["Bash(curl:*)", "Read(./.env)", "Read(./.env.*)", "Read(./secrets/**)"]
+    "deny": ["Bash(rm -rf:*)","Bash(curl:*)", "Read(./.env)", "Read(./.env.*)", "Read(./secrets/**)"]
   },
   "enabledPlugins": {
     "example-skills@anthropic-agent-skills": true
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bun x ccusage statusline"
   }
 }

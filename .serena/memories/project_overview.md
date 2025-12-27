@@ -18,7 +18,7 @@ Building an EC site dashboard that displays data spanning multiple DynamoDB tabl
   - DynamoDB CDK stack implementation
   - CDK deployment validation completed
   
-- **Phase 3: AppSync GraphQL API** (Task 3.1 - JUST COMPLETED)
+- **Phase 3: AppSync GraphQL API** (Tasks 3.1-3.3)
   - ✅ GraphQL schema definition (`packages/cdk/lib/appsync/schema.graphql`)
     - 12 Query operations
     - 3 Mutation operations
@@ -26,21 +26,60 @@ Building an EC site dashboard that displays data spanning multiple DynamoDB tabl
     - 3 Connection types for pagination
     - 4 Input types for mutations
     - 3 Analytics types
-  - ✅ Schema validation tests (10 tests, all passing)
-  - ✅ TypeScript compilation successful
+  - ✅ AppSync Stack implementation completed
+  - ✅ DynamoDB data sources connected
+
+- **Phase 4: Customer Management Resolvers** (Tasks 4.1-4.3)
+  - ✅ Customer CRUD operations (list, get, create)
+  - ✅ Email search with GSI
+  - ✅ Customer orders field resolver
+
+- **Phase 5: Product Catalog Resolvers** (Tasks 5.1-5.2)
+  - ✅ Product CRUD operations
+  - ✅ Category filtering with GSI
+
+- **Phase 6: Order Management Resolvers** (Tasks 6.1-6.3)
+  - ✅ Order queries (list, get by customer)
+  - ✅ Order creation with validation
+  - ✅ Order detail Pipeline Resolver (multi-table join)
+
+- **Phase 7: Analytics Resolvers** (Tasks 7.1, 7.3)
+  - ✅ Sales summary aggregation
+  - ✅ Customer statistics
+
+- **Phase 8: Frontend Setup** (Tasks 8.1-8.3)
+  - ✅ Vite + React + TypeScript project initialization
+  - ✅ AWS Amplify v6 client integration
+  - ✅ GraphQL Code Generation setup
+
+- **Phase 9: Customer Management UI** (Tasks 9.1-9.3) - COMPLETED
+  - ✅ Customer list page with pagination
+  - ✅ Customer creation form component
+    - Email validation (client-side)
+    - Form reset on success
+    - Error handling and display
+    - TDD: 8/8 tests passing
+  - ✅ Customer search form component (Task 9.3 - JUST COMPLETED)
+    - Email-based customer search
+    - searchCustomerByEmail GraphQL query integration
+    - Search results displayed in table format
+    - "顧客が見つかりません" message for no results
+    - Client-side email validation
+    - Loading and error states
+    - TDD: 9/9 tests passing
 
 ### Next Steps 🚀
-- **Task 3.2**: AppSync Stack class implementation
-- **Task 3.3**: DynamoDB data source connections
-- **Tasks 4.x-7.x**: Resolver implementations (Customers, Products, Orders, Analytics)
-- **Tasks 8.x-12.x**: Frontend React application
+- **Task 7.2**: Product ranking resolver implementation
+- **Tasks 10.x**: Product catalog UI pages
+- **Tasks 11.x**: Order management UI pages
+- **Task 12.1**: Dashboard analytics page
 - **Tasks 13.x**: Integration and deployment
 
 ### Progress Summary
 - **Total Tasks**: 54 subtasks across 13 major tasks
-- **Completed**: 7 tasks (1.1, 1.2, 2.1, 2.2, 2.3, 3.1)
-- **Remaining**: 47 tasks
-- **Current Phase**: AppSync GraphQL API Infrastructure (3/3 tasks in section 3)
+- **Completed**: 24 tasks
+- **Remaining**: 30 tasks
+- **Current Phase**: Frontend UI Implementation (Customer Management Complete, Moving to Product Catalog)
 
 ## Technology Stack
 ### Backend
@@ -83,12 +122,12 @@ packages/
 ## Key Features Implementation Status
 - ✅ DynamoDB table structure (4 tables with GSIs)
 - ✅ GraphQL schema definition
-- ⏳ GraphQL resolvers (NOT STARTED)
-- ⏳ Customer management and search (NOT STARTED)
-- ⏳ Product catalog with category filtering (NOT STARTED)
-- ⏳ Order management with detailed views (NOT STARTED)
-- ⏳ Dashboard analytics (NOT STARTED)
-- ⏳ Frontend UI (NOT STARTED)
+- ✅ GraphQL resolvers (Customer, Product, Order, Analytics)
+- ✅ Customer management (backend + frontend list + create form)
+- ✅ Product catalog with category filtering (backend complete)
+- ✅ Order management with detailed views (backend complete, Pipeline Resolver)
+- ⏳ Dashboard analytics (backend complete, frontend pending)
+- ⏳ Frontend UI (2/5 pages complete: Customer list + create form)
 
 ## Target Users
 Developers learning AWS serverless architecture, specifically the AppSync + DynamoDB combination for handling complex data relationships.
@@ -111,8 +150,27 @@ This project follows **Kiro-style Spec-Driven Development** on AI-DLC (AI Develo
 - **TypeScript**: ~5.3.0 (CDK), ^5.7.2 (root)
 
 ## Recent Accomplishments (2025-12-27)
-- Implemented GraphQL schema with comprehensive type definitions
-- Created validation test suite (10 tests, 100% passing)
-- Followed TDD methodology (RED-GREEN-REFACTOR cycle)
-- Schema covers all requirements: 12 queries, 3 mutations, 10 custom types
-- No TypeScript errors, clean build
+- ✅ Completed Task 9.2: Customer creation form implementation
+  - Created `CreateCustomerForm.tsx` component
+  - Implemented client-side email validation with regex
+  - Integrated with `createCustomer` GraphQL mutation
+  - Form reset on successful creation
+  - Error handling and display below form fields
+  - TDD methodology: 8/8 tests passing
+  - All 27 frontend tests passing
+  - Clean TypeScript build
+  - Follows project code style conventions
+
+- ✅ Completed Task 9.3: Customer search functionality implementation
+  - Created `CustomerSearchForm.tsx` component
+  - Implemented email-based search with searchCustomerByEmail query
+  - Search results displayed in same table format as customer list
+  - Shows "顧客が見つかりません" message when no results found
+  - Client-side email validation before search
+  - Loading state ("Searching...") during API call
+  - Disabled button while searching
+  - Comprehensive error handling
+  - TDD methodology: RED-GREEN-REFACTOR-VERIFY cycle
+  - 9/9 new tests passing (36/36 total frontend tests)
+  - Quality checks: ✅ Lint, ✅ Build, ✅ All tests
+  - Follows project code style conventions

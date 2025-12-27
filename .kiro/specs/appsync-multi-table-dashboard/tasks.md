@@ -222,21 +222,27 @@
   - Quality: ✅ 19/19 tests, ✅ Build
   - _Requirements: 9.2, 9.7, 9.8_
 
-- [ ] 9.2 顧客作成フォーム実装
+- [x] 9.2 顧客作成フォーム実装
   - src/components/Customers/CreateCustomerForm.tsxを作成
   - name、emailフィールドを持つフォームを実装
   - メールアドレス形式バリデーションをクライアント側でも実行
   - createCustomerミューテーションを実行し、顧客を作成
   - 作成成功時はフォームをリセットし、一覧ページに遷移
   - エラー時はフォームフィールド下にエラーメッセージを表示
+  - TDD: RED-GREEN-REFACTOR-VERIFY cycle
+  - 8/8 新規テスト成功 (27/27 フロントエンドテスト total)
+  - Quality: ✅ 27/27 tests, ✅ Build
   - _Requirements: 9.2_
 
-- [ ] 9.3 (P) 顧客検索機能実装
+- [x] 9.3 (P) 顧客検索機能実装
   - src/components/Customers/CustomerSearchForm.tsxを作成
   - emailフィールドを持つ検索フォームを実装
   - searchCustomerByEmailクエリを実行し、顧客を検索
   - 検索結果を一覧ページと同じテーブル形式で表示
   - 検索結果が0件の場合は「顧客が見つかりません」メッセージを表示
+  - TDD: RED-GREEN-REFACTOR-VERIFY cycle
+  - 9/9 新規テスト成功 (36/36 フロントエンドテスト total)
+  - Quality: ✅ 36/36 tests, ✅ Build, ✅ Lint
   - _Requirements: 9.2_
 
 ### 10. 商品カタログUIページ実装
