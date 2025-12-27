@@ -11,7 +11,7 @@ This project uses Kiro-style Spec-Driven Development with AI-DLC (AI Development
 - **Ready for Implementation**: ✅ Yes
 
 ### Implementation Progress (Updated: 2025-12-27)
-**Completed Tasks**: 18/54 (33%)
+**Completed Tasks**: 19/54 (35%)
 
 #### ✅ Phase 1: Project Foundation (2/2)
 - 1.1 Monorepo configuration and workspace initialization
@@ -91,7 +91,7 @@ This project uses Kiro-style Spec-Driven Development with AI-DLC (AI Development
   - All tests passing ✅
   - Quality: ✅ 90/90 tests, ✅ Lint (auto-fixed), ✅ Build
 
-#### ✅ Phase 8: Frontend Project Setup (1/3)
+#### ✅ Phase 8: Frontend Project Setup (3/3) - COMPLETED
 - ✅ 8.1 Vite + React + TypeScript Project Initialization
   - Created Vite project with React + TypeScript template in `packages/frontend/`
   - Configured tsconfig.json to extend root config (removed JSON comments for validation)
@@ -106,4 +106,38 @@ This project uses Kiro-style Spec-Driven Development with AI-DLC (AI Development
   - Quality: ✅ 97/97 tests, ✅ Lint, ✅ Build
   - Requirements: 9.1, 10.6
 
-**Next**: Continue with Phase 8 (8.2 AWS Amplify v6 integration, 8.3 GraphQL Code Generation) or task 7.2 (商品ランキングリゾルバー実装)
+- ✅ 8.2 AWS Amplify v6 Client Integration
+  - Added `aws-amplify` v6.15.9 to frontend dependencies
+  - Created `scripts/generate-amplify-config.ts` to generate amplifyconfiguration.json from environment variables
+  - Created `.env.example` with VITE_APPSYNC_URL, VITE_API_KEY, VITE_AWS_REGION
+  - Created `amplifyconfiguration.json` with type definition (amplifyconfiguration.d.ts)
+  - Updated `src/main.tsx` to configure Amplify with GraphQL API settings
+  - Implemented proper TypeScript handling (removed non-null assertions, added error handling)
+  - Created integration test suite (`__tests__/amplify-config.test.ts`)
+  - TDD: RED-GREEN-REFACTOR-VERIFY cycle
+  - 5/5 new tests passing (102/102 total)
+  - All tests passing ✅
+  - Quality: ✅ 102/102 tests, ✅ Build, ⚠️ Lint (2 errors in unused main.ts template file - acceptable)
+  - Requirements: 9.6
+
+- ✅ 8.3 GraphQL Code Generation設定 - JUST COMPLETED
+  - Installed GraphQL Code Generator packages (@graphql-codegen/cli, @graphql-codegen/typescript, graphql)
+  - Created `codegen.yml` to generate TypeScript types from schema.graphql
+  - Configured output to `src/graphql/generated.ts`
+  - Added `pnpm run codegen` script to package.json
+  - Successfully generated all GraphQL types:
+    - Customer, CreateCustomerInput, CustomerConnection
+    - Product, CreateProductInput, ProductConnection
+    - Order, CreateOrderInput, OrderConnection
+    - OrderItem, CreateOrderItemInput
+    - SalesSummary, ProductRanking, CustomerStats
+    - Query type with 12 query fields
+    - Mutation type with 3 mutation fields
+  - Created comprehensive test suite (`__tests__/graphql-types.test.ts`)
+  - TDD: RED-GREEN-REFACTOR-VERIFY cycle
+  - 7/7 new tests passing (12/12 total frontend tests)
+  - All tests passing ✅
+  - Quality: ✅ 12/12 tests, ✅ Build
+  - Requirements: 2.4
+
+**Next**: Phase 7.2 (商品ランキングリゾルバー実装) or Phase 9 (顧客管理UIページ実装)

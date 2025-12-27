@@ -12,7 +12,8 @@
     "format": "biome format --write .",
     "deploy": "pnpm --filter cdk deploy",
     "synth": "pnpm --filter cdk synth",
-    "destroy": "pnpm --filter cdk destroy"
+    "destroy": "pnpm --filter cdk destroy",
+    "generate:amplify-config": "tsx scripts/generate-amplify-config.ts"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",

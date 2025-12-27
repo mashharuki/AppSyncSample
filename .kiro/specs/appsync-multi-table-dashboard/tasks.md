@@ -190,18 +190,22 @@
   - package.jsonに開発スクリプト(dev、build、preview)を追加
   - _Requirements: 9.1, 10.6_
 
-- [ ] 8.2 AWS Amplify v6クライアント統合
+- [x] 8.2 AWS Amplify v6クライアント統合
   - packages/frontendにaws-amplify依存を追加(pnpm add aws-amplify)
   - src/main.tsxでAmplify.configureを呼び出し、amplifyconfiguration.jsonを読み込み
   - amplifyconfiguration.jsonをCDK OutputsのAppSync APIエンドポイントとAPIキーで動的生成するスクリプトを作成
   - Vite環境変数(import.meta.env.VITE_APPSYNC_URL、VITE_API_KEY)をamplifyconfiguration.jsonに注入
   - _Requirements: 9.6_
 
-- [ ] 8.3 GraphQL Code Generation設定
-  - packages/frontendにGraphQL Code Generatorをインストール(pnpm add -D @graphql-codegen/cli @graphql-codegen/typescript @graphql-codegen/typescript-operations)
+- [x] 8.3 GraphQL Code Generation設定
+  - packages/frontendにGraphQL Code Generatorをインストール(pnpm add -D @graphql-codegen/cli @graphql-codegen/typescript @graphql-codegen/typescript-operations graphql)
   - codegen.ymlを作成し、schema.graphqlから型定義を自動生成する設定を追加
   - src/graphql/generated.tsに型定義が出力されるよう設定
-  - package.jsonにcodegen スクリプト(graphql-codegen)を追加
+  - package.jsonにcodegen スクリプト(pnpm run codegen)を追加
+  - 全GraphQL型(Customer, Product, Order, OrderItem, SalesSummary, Query, Mutation等)のTypeScript型定義を自動生成
+  - TDD: RED-GREEN-REFACTOR-VERIFY cycle
+  - 7/7 新規テストが通過 (12/12 total)
+  - Quality: ✅ 12/12 tests, ✅ Build
   - _Requirements: 2.4_
 
 ### 9. 顧客管理UIページ実装

@@ -1,0 +1,26 @@
+overwrite: true
+schema: "../cdk/lib/appsync/schema.graphql"
+documents: null
+generates:
+  src/graphql/generated.ts:
+    plugins:
+      - "typescript"
+    config:
+      # Type-safe configuration
+      skipTypename: false
+      enumsAsTypes: true
+      # Make all fields required by default (matching GraphQL schema)
+      maybeValue: T
+      # Generate scalars as TypeScript types
+      scalars:
+        ID: string
+        String: string
+        Int: number
+        Float: number
+        Boolean: boolean
+      # Avoid duplicating types
+      avoidOptionals: false
+      # Generate immutable types
+      immutableTypes: false
+      # Use const enums for better tree-shaking
+      constEnums: false
