@@ -10,9 +10,7 @@ export function request(ctx) {
 
   return {
     operation: 'GetItem',
-    key: {
-      customerId: { S: customerId },
-    },
+    key: util.dynamodb.toMapValues({ customerId }),
   };
 }
 

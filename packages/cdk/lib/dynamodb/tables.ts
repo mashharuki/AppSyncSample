@@ -14,10 +14,6 @@ export function createCustomersTable(scope: Construct, id: string): Table {
       name: 'customerId',
       type: AttributeType.STRING,
     },
-    sortKey: {
-      name: 'customerId',
-      type: AttributeType.STRING,
-    },
     billingMode: BillingMode.PAY_PER_REQUEST,
     removalPolicy: RemovalPolicy.RETAIN,
   });
@@ -47,10 +43,6 @@ export function createProductsTable(scope: Construct, id: string): Table {
       name: 'productId',
       type: AttributeType.STRING,
     },
-    sortKey: {
-      name: 'productId',
-      type: AttributeType.STRING,
-    },
     billingMode: BillingMode.PAY_PER_REQUEST,
     removalPolicy: RemovalPolicy.RETAIN,
   });
@@ -77,10 +69,6 @@ export function createOrdersTable(scope: Construct, id: string): Table {
   const table = new Table(scope, id, {
     tableName: 'Orders',
     partitionKey: {
-      name: 'orderId',
-      type: AttributeType.STRING,
-    },
-    sortKey: {
       name: 'orderId',
       type: AttributeType.STRING,
     },
@@ -114,10 +102,6 @@ export function createOrderItemsTable(scope: Construct, id: string): Table {
   const table = new Table(scope, id, {
     tableName: 'OrderItems',
     partitionKey: {
-      name: 'orderItemId',
-      type: AttributeType.STRING,
-    },
-    sortKey: {
       name: 'orderItemId',
       type: AttributeType.STRING,
     },

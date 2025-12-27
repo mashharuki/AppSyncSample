@@ -18,9 +18,9 @@ export function request(ctx) {
     index: 'category-gsi',
     query: {
       expression: 'category = :category',
-      expressionValues: {
-        ':category': { S: normalizedCategory },
-      },
+      expressionValues: util.dynamodb.toMapValues({
+        ':category': normalizedCategory,
+      }),
     },
     limit: limit || 20,
     nextToken: nextToken || null,

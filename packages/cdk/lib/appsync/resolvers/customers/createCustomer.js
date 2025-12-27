@@ -20,14 +20,12 @@ export function request(ctx) {
 
   return {
     operation: 'PutItem',
-    key: {
-      customerId: { S: customerId },
-    },
-    attributeValues: {
-      name: { S: name },
-      email: { S: email },
-      createdAt: { S: now },
-    },
+    key: util.dynamodb.toMapValues({ customerId }),
+    attributeValues: util.dynamodb.toMapValues({
+      name,
+      email,
+      createdAt: now,
+    }),
   };
 }
 

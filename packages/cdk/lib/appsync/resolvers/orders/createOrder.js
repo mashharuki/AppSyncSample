@@ -57,16 +57,14 @@ export function request(ctx) {
   // 完全な実装ではProductsテーブルから価格を取得して計算する必要あり
   return {
     operation: 'PutItem',
-    key: {
-      orderId: { S: orderId },
-    },
-    attributeValues: {
-      customerId: { S: customerId },
-      orderDate: { S: now },
-      totalAmount: { N: '0' },
-      status: { S: 'Pending' },
-      createdAt: { S: now },
-    },
+    key: util.dynamodb.toMapValues({ orderId }),
+    attributeValues: util.dynamodb.toMapValues({
+      customerId,
+      orderDate: now,
+      totalAmount: 0,
+      status: 'Pending',
+      createdAt: now,
+    }),
   };
 }
 

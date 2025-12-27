@@ -176,9 +176,7 @@ const DashboardPage = () => {
             backgroundColor: '#f9f9f9',
           }}
         >
-          <h3 style={{ margin: '0 0 10px 0', fontSize: '14px', color: '#666' }}>
-            Total Revenue
-          </h3>
+          <h3 style={{ margin: '0 0 10px 0', fontSize: '14px', color: '#666' }}>Total Revenue</h3>
           {salesLoading ? (
             <p>Loading sales summary...</p>
           ) : salesError ? (
@@ -286,9 +284,7 @@ const DashboardPage = () => {
             <tbody>
               {productRanking.map((product, index) => (
                 <tr key={product.productId}>
-                  <td style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>
-                    {index + 1}
-                  </td>
+                  <td style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>{index + 1}</td>
                   <td style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>
                     {product.productName}
                   </td>
@@ -325,9 +321,7 @@ const DashboardPage = () => {
             backgroundColor: '#f9f9f9',
           }}
         >
-          <h3 style={{ margin: '0 0 10px 0', fontSize: '14px', color: '#666' }}>
-            Total Customers
-          </h3>
+          <h3 style={{ margin: '0 0 10px 0', fontSize: '14px', color: '#666' }}>Total Customers</h3>
           {statsLoading ? (
             <p>Loading customer stats...</p>
           ) : statsError ? (

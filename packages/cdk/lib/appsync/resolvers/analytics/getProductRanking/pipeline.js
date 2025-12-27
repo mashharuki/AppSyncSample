@@ -3,8 +3,9 @@
  * productRankingsとproductsをマージして最終結果を返す
  */
 
-export function request(_ctx) {
-  // Pipeline開始前の準備
+export function request(ctx) {
+  // Pipeline開始前の準備: limit引数をstashに保存
+  ctx.stash.limit = ctx.arguments.limit || 10;
   return {};
 }
 

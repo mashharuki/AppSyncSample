@@ -23,16 +23,14 @@ export function request(ctx) {
 
   return {
     operation: 'PutItem',
-    key: {
-      productId: { S: productId },
-    },
-    attributeValues: {
-      name: { S: name },
-      category: { S: normalizedCategory },
-      price: { N: price.toString() },
-      description: { S: description || '' },
-      createdAt: { S: now },
-    },
+    key: util.dynamodb.toMapValues({ productId }),
+    attributeValues: util.dynamodb.toMapValues({
+      name,
+      category: normalizedCategory,
+      price,
+      description: description || '',
+      createdAt: now,
+    }),
   };
 }
 

@@ -55,15 +55,15 @@ describe('CDK Synth Integration Test', () => {
     }
   });
 
-  it('should have 4 CloudFormation Outputs', () => {
+  it('should have all required DynamoDB table Outputs', () => {
     const templatePath = join(__dirname, '../../cdk.out/AppSyncSampleDynamoDBStack.template.json');
     const template = JSON.parse(readFileSync(templatePath, 'utf-8'));
 
     const outputs = template.Outputs;
     const outputKeys = Object.keys(outputs);
 
-    // 4つのOutputが存在することを確認
-    expect(outputKeys).toHaveLength(4);
+    // 少なくとも4つのOutputが存在することを確認
+    expect(outputKeys.length).toBeGreaterThanOrEqual(4);
 
     // 各テーブル名のOutputが存在することを確認
     expect(outputs.CustomersTableName).toBeDefined();

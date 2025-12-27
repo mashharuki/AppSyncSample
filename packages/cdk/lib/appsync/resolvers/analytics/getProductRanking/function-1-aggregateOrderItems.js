@@ -44,8 +44,8 @@ export function response(ctx) {
     }))
     .sort((a, b) => b.totalQuantity - a.totalQuantity);
 
-  // limit引数に従い上位N件を抽出（デフォルト10）
-  const limit = ctx.arguments.limit || 10;
+  // limit引数に従い上位N件を抽出（stashから取得、デフォルト10）
+  const limit = ctx.stash.limit || 10;
   const topProducts = sortedProducts.slice(0, limit);
 
   // 次のFunctionのためにstashに保存

@@ -8,16 +8,16 @@
 import { util } from '@aws-appsync/utils';
 
 export function request(ctx) {
-  const { orderId } = ctx.prev.result;
+  const { orderId } = ctx.stash.order;
 
   return {
     operation: 'Query',
     index: 'order-items-gsi',
     query: {
       expression: 'orderId = :orderId',
-      expressionValues: {
-        ':orderId': { S: orderId },
-      },
+      expressionValues: util.dynamodb.toMapValues({
+        ':orderId': orderId,
+      }),
     },
   };
 }

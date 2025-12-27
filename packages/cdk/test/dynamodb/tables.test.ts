@@ -40,10 +40,6 @@ describe('DynamoDB Tables', () => {
             AttributeName: 'customerId',
             KeyType: 'HASH',
           },
-          {
-            AttributeName: 'customerId',
-            KeyType: 'RANGE',
-          },
         ],
         GlobalSecondaryIndexes: [
           {
@@ -96,10 +92,6 @@ describe('DynamoDB Tables', () => {
           {
             AttributeName: 'productId',
             KeyType: 'HASH',
-          },
-          {
-            AttributeName: 'productId',
-            KeyType: 'RANGE',
           },
         ],
         GlobalSecondaryIndexes: [
@@ -154,10 +146,6 @@ describe('DynamoDB Tables', () => {
           {
             AttributeName: 'orderId',
             KeyType: 'HASH',
-          },
-          {
-            AttributeName: 'orderId',
-            KeyType: 'RANGE',
           },
         ],
         GlobalSecondaryIndexes: [
@@ -216,10 +204,6 @@ describe('DynamoDB Tables', () => {
           {
             AttributeName: 'orderItemId',
             KeyType: 'HASH',
-          },
-          {
-            AttributeName: 'orderItemId',
-            KeyType: 'RANGE',
           },
         ],
         GlobalSecondaryIndexes: [

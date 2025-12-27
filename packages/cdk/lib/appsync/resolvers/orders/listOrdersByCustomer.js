@@ -15,9 +15,9 @@ export function request(ctx) {
     index: 'customer-order-gsi',
     query: {
       expression: 'customerId = :customerId',
-      expressionValues: {
-        ':customerId': { S: customerId },
-      },
+      expressionValues: util.dynamodb.toMapValues({
+        ':customerId': customerId,
+      }),
     },
     limit: limit || 20,
     nextToken: nextToken || null,

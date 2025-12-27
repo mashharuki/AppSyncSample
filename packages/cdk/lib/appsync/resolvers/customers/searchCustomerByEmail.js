@@ -26,9 +26,9 @@ export function request(ctx) {
     index: 'email-gsi',
     query: {
       expression: 'email = :email',
-      expressionValues: {
-        ':email': { S: email },
-      },
+      expressionValues: util.dynamodb.toMapValues({
+        ':email': email,
+      }),
     },
   };
 }
