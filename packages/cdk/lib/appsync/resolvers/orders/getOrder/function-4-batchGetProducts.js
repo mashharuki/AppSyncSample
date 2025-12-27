@@ -29,7 +29,6 @@ export function request(ctx) {
   // BatchGetItemリクエストを構築
   const keys = uniqueProductIds.map((productId) => ({
     productId: { S: productId },
-    productId: { S: productId },
   }));
 
   return {

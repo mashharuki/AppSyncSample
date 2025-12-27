@@ -159,7 +159,7 @@
 
 ### 7. ダッシュボード分析リゾルバー実装
 
-- [ ] 7.1 (P) 売上サマリーリゾルバー実装
+- [x] 7.1 (P) 売上サマリーリゾルバー実装
   - packages/cdk/lib/appsync/resolvers/analytics/getSalesSummary.jsを作成
   - OrdersテーブルScanオペレーションで全注文を取得
   - リゾルバー内でtotalRevenue(合計売上)、orderCount(注文数)、averageOrderValue(平均注文額)を計算

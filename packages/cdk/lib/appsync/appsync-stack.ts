@@ -213,7 +213,9 @@ export class AppSyncStack extends Stack {
       api: this.api,
       dataSource: orderItemsDataSource,
       runtime: FunctionRuntime.JS_1_0_0,
-      code: Code.fromAsset(join(__dirname, 'resolvers/orders/getOrder/function-3-getOrderItems.js')),
+      code: Code.fromAsset(
+        join(__dirname, 'resolvers/orders/getOrder/function-3-getOrderItems.js'),
+      ),
     });
 
     // Function 4: BatchGetProducts
@@ -252,6 +254,18 @@ export class AppSyncStack extends Stack {
       dataSource: ordersDataSource,
       runtime: FunctionRuntime.JS_1_0_0,
       code: Code.fromAsset(join(__dirname, 'resolvers/customers/Customer.orders.js')),
+    });
+
+    // ===== ダッシュボード分析リゾルバー =====
+
+    // Query.getSalesSummary リゾルバー
+    new Resolver(this, 'GetSalesSummaryResolver', {
+      api: this.api,
+      typeName: 'Query',
+      fieldName: 'getSalesSummary',
+      dataSource: ordersDataSource,
+      runtime: FunctionRuntime.JS_1_0_0,
+      code: Code.fromAsset(join(__dirname, 'resolvers/analytics/getSalesSummary.js')),
     });
 
     // CloudFormation Outputsでエンドポイントとキーを出力

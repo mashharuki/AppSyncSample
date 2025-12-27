@@ -52,7 +52,7 @@ This project uses Kiro-style Spec-Driven Development with AI-DLC (AI Development
   - 4/4 new tests passing (76/76 total)
   - NOTE: Simplified implementation due to APPSYNC_JS limitations
     - Full implementation completed in task 6.3 (Pipeline Resolver)
-- ✅ 6.3 Order detail Pipeline Resolver (JUST COMPLETED)
+- ✅ 6.3 Order detail Pipeline Resolver
   - Created Pipeline Resolver with 4 functions + before/after handlers
   - Function 1: GetOrder (OrdersTable GetItem)
   - Function 2: GetCustomer (CustomersTable GetItem)
@@ -65,33 +65,16 @@ This project uses Kiro-style Spec-Driven Development with AI-DLC (AI Development
   - 6/6 new tests passing (82/82 total)
   - All tests passing ✅
 
-### Task 6.3 Details (JUST COMPLETED)
-**Files Created**:
-- `packages/cdk/lib/appsync/resolvers/orders/getOrder/function-1-getOrder.js` (30 lines)
-- `packages/cdk/lib/appsync/resolvers/orders/getOrder/function-2-getCustomer.js` (27 lines)
-- `packages/cdk/lib/appsync/resolvers/orders/getOrder/function-3-getOrderItems.js` (31 lines)
-- `packages/cdk/lib/appsync/resolvers/orders/getOrder/function-4-batchGetProducts.js` (55 lines)
-- `packages/cdk/lib/appsync/resolvers/orders/getOrder/before.js` (16 lines) - kept for reference
-- `packages/cdk/lib/appsync/resolvers/orders/getOrder/after.js` (35 lines) - kept for reference
-- `packages/cdk/lib/appsync/resolvers/orders/getOrder/pipeline.js` (39 lines) - combined before/after handler
-- Added 6 test cases in `packages/cdk/test/appsync/resolvers/orders.test.ts`
+#### ✅ Phase 7: Analytics Resolvers (1/3) - JUST COMPLETED
+- ✅ 7.1 Sales Summary Resolver (JUST COMPLETED)
+  - Created `getSalesSummary.js` resolver with Scan operation
+  - Implemented revenue calculation logic (totalRevenue, orderCount, averageOrderValue)
+  - Handles empty data case (returns 0 for all fields)
+  - Registered GetSalesSummaryResolver in AppSyncStack
+  - Created test suite in `test/appsync/resolvers/analytics.test.ts`
+  - TDD: RED-GREEN-REFACTOR-VERIFY cycle
+  - 4/4 new tests passing (86/86 total)
+  - All tests passing ✅
+  - Quality: ✅ 86/86 tests, ✅ Lint, ✅ Build
 
-**Files Modified**:
-- `packages/cdk/lib/dynamodb/tables.ts` - Added order-items-gsi to OrderItemsTable
-- `packages/cdk/lib/appsync/appsync-stack.ts` - Added 4 AppsyncFunctions and GetOrderResolver
-- `packages/cdk/test/dynamodb/tables.test.ts` - Updated OrderItems table test for new GSI
-
-**Implementation**:
-- Function-1-getOrder: DynamoDB GetItem on OrdersTable, result saved to stash.order
-- Function-2-getCustomer: DynamoDB GetItem on CustomersTable, result saved to stash.customer
-- Function-3-getOrderItems: DynamoDB Query on OrderItemsTable via order-items-gsi, result saved to stash.orderItems
-- Function-4-batchGetProducts: DynamoDB BatchGetItem on ProductsTable for N+1 prevention, result saved to stash.products
-- Pipeline.js: Before handler prepares orderId, After handler merges all stash data and enriches OrderItems with Product details
-- Pipeline Resolver registered with all 4 functions in correct order
-- APPSYNC_JS runtime with comprehensive error handling and data validation
-
-**Quality**: ✅ 82/82 tests, ✅ Lint, ✅ Build
-
-**Key Achievement**: Successfully implemented multi-table data aggregation using AppSync Pipeline Resolver, demonstrating proper handling of DynamoDB's limitation of not supporting SQL-style joins. The BatchGetItem operation efficiently prevents N+1 query problems.
-
-**Next**: Move to task 7.1 (売上サマリーリゾルバー実装) for Analytics Domain implementation
+**Next**: Move to task 7.2 (売上サマリーリゾルバー実装) for Analytics Domain implementation

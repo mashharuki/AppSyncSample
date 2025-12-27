@@ -12,7 +12,6 @@ export function request(ctx) {
     operation: 'GetItem',
     key: {
       customerId: { S: customerId },
-      customerId: { S: customerId },
     },
   };
 }

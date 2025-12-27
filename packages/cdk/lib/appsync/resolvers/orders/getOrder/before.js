@@ -10,7 +10,7 @@ export function request(ctx) {
   };
 }
 
-export function response(ctx) {
+export function response(_ctx) {
   // beforeステップでは何も返さず、次のステップに進む
   return {};
 }

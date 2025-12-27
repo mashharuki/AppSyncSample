@@ -8,7 +8,7 @@
  * - orderItems: OrderItem配列（各アイテムにproduct情報を含む）
  */
 
-export function request(ctx) {
+export function request(_ctx) {
   // afterステップではリクエストは不要
   return {};
 }
