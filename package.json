@@ -10,9 +10,7 @@
     "test": "pnpm -r test",
     "lint": "biome check .",
     "format": "biome format --write .",
-    "deploy": "pnpm --filter cdk deploy",
-    "synth": "pnpm --filter cdk synth",
-    "destroy": "pnpm --filter cdk destroy",
+    "cdk": "pnpm --filter cdk",
     "generate:amplify-config": "tsx scripts/generate-amplify-config.ts"
   },
   "devDependencies": {
