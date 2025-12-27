@@ -210,13 +210,16 @@
 
 ### 9. 顧客管理UIページ実装
 
-- [ ] 9.1 顧客一覧ページ実装
+- [x] 9.1 顧客一覧ページ実装
   - src/pages/Customers/CustomerListPage.tsxを作成
   - Amplify generateClient()でGraphQLクライアントを生成
   - listCustomersクエリを実行し、顧客一覧を取得
   - ローディング中はスピナー表示、エラー時はエラーメッセージ表示
   - 顧客リストをテーブル形式で表示(customerId、name、email列)
   - ページネーション(limit: 20、nextTokenボタン)を実装
+  - TDD: RED-GREEN-REFACTOR-VERIFY cycle
+  - 7/7 新規テスト成功 (19/19 フロントエンドテスト total)
+  - Quality: ✅ 19/19 tests, ✅ Build
   - _Requirements: 9.2, 9.7, 9.8_
 
 - [ ] 9.2 顧客作成フォーム実装

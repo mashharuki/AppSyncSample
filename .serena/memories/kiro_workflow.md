@@ -11,7 +11,7 @@ This project uses Kiro-style Spec-Driven Development with AI-DLC (AI Development
 - **Ready for Implementation**: ✅ Yes
 
 ### Implementation Progress (Updated: 2025-12-27)
-**Completed Tasks**: 19/54 (35%)
+**Completed Tasks**: 20/54 (37%)
 
 #### ✅ Phase 1: Project Foundation (2/2)
 - 1.1 Monorepo configuration and workspace initialization
@@ -140,4 +140,25 @@ This project uses Kiro-style Spec-Driven Development with AI-DLC (AI Development
   - Quality: ✅ 12/12 tests, ✅ Build
   - Requirements: 2.4
 
-**Next**: Phase 7.2 (商品ランキングリゾルバー実装) or Phase 9 (顧客管理UIページ実装)
+#### 🆕 Phase 9: Customer Management UI (1/3) - IN PROGRESS
+- ✅ 9.1 Customer List Page - JUST COMPLETED
+  - Created `src/pages/Customers/CustomerListPage.tsx`
+  - Implemented GraphQL query with Amplify generateClient()
+  - Features implemented:
+    - Loading state with spinner ("Loading..." message)
+    - Error handling with error message display
+    - Table format display (customerId, name, email columns)
+    - Pagination with nextToken (limit: 20)
+    - Next page button (hidden when no nextToken)
+  - Created comprehensive test suite (`CustomerListPage.test.tsx`)
+  - Tests cover: loading, data display, error handling, pagination, table headers
+  - TDD: RED-GREEN-REFACTOR-VERIFY cycle
+  - 7/7 new tests passing (19/19 frontend tests total)
+  - All tests passing ✅
+  - Quality: ✅ 19/19 tests, ✅ Build
+  - Requirements: 9.2, 9.7, 9.8
+  - Added @testing-library/react, @testing-library/user-event, @testing-library/jest-dom
+  - Created vitest setup file for jest-dom matchers
+  - Updated tsconfig to exclude test files from build
+
+**Next**: Phase 9 (9.2 顧客作成フォーム実装 or 9.3 顧客検索機能実装) or Phase 7.2 (商品ランキングリゾルバー実装)
