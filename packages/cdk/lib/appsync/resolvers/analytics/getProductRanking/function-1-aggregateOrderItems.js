@@ -37,10 +37,12 @@ export function response(ctx) {
   }
 
   // 販売数量でソート（降順）
-  const sortedProducts = Object.entries(productSales)
-    .map(([productId, totalQuantity]) => ({
+  // Note: Object.keys()を使用（APPSYNC_JS互換性のため）
+  const productIds = Object.keys(productSales);
+  const sortedProducts = productIds
+    .map((productId) => ({
       productId,
-      totalQuantity,
+      totalQuantity: productSales[productId],
     }))
     .sort((a, b) => b.totalQuantity - a.totalQuantity);
 
