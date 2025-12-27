@@ -183,7 +183,7 @@
 
 ### 8. フロントエンドプロジェクトセットアップ
 
-- [ ] 8.1 Vite + React + TypeScriptプロジェクト初期化
+- [x] 8.1 Vite + React + TypeScriptプロジェクト初期化
   - packages/frontend/ディレクトリを作成し、Viteプロジェクトを初期化(pnpm create vite frontend --template react-ts)
   - tsconfig.jsonを編集し、ルートのtsconfig.jsonを継承
   - vite.config.tsを編集し、ポート3000でdev serverを起動するよう設定
