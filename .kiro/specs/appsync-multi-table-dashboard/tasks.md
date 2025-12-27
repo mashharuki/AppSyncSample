@@ -272,15 +272,18 @@
 
 ### 11. 注文管理UIページ実装
 
-- [ ] 11.1 注文一覧ページ実装
+- [x] 11.1 注文一覧ページ実装
   - src/pages/Orders/OrderListPage.tsxを作成
   - listOrdersクエリを実行し、注文一覧を取得
   - 注文リストをテーブル形式で表示(orderId、customerId、orderDate、totalAmount、status列)
   - ページネーション(limit: 20、nextTokenボタン)を実装
   - 各行に「詳細」ボタンを追加し、クリックで注文詳細ページに遷移
+  - TDD: RED-GREEN-REFACTOR-VERIFY cycle
+  - 9/9 新規テスト成功 (66/66 フロントエンドテスト total)
+  - Quality: ✅ 66/66 tests, ✅ Build, ✅ Lint
   - _Requirements: 9.4_
 
-- [ ] 11.2 注文詳細ページ実装
+- [x] 11.2 注文詳細ページ実装
   - src/pages/Orders/OrderDetailPage.tsxを作成
   - getOrderクエリ(Pipeline Resolver)を実行し、注文詳細(Order、Customer、OrderItems、Products)を取得
   - 顧客情報セクション(name、email)を表示

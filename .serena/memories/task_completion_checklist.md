@@ -31,7 +31,7 @@ pnpm test
 # For specific workspace
 pnpm --filter cdk test
 pnpm --filter shared test
-# pnpm --filter frontend test (when frontend package exists)
+pnpm --filter frontend test
 ```
 
 ## 4. Local Validation (if applicable)
