@@ -247,12 +247,15 @@
 
 ### 10. 商品カタログUIページ実装
 
-- [ ] 10.1 商品一覧ページ実装
+- [x] 10.1 商品一覧ページ実装
   - src/pages/Products/ProductListPage.tsxを作成
   - listProductsクエリを実行し、商品一覧を取得
   - 商品リストをカード形式で表示(productId、name、category、price、description)
   - ページネーション(limit: 20、nextTokenボタン)を実装
   - カテゴリフィルタドロップダウンを追加し、選択時にlistProductsByCategoryクエリを実行
+  - TDD: RED-GREEN-REFACTOR-VERIFY cycle
+  - 10/10 新規テスト成功 (46/46 フロントエンドテスト total)
+  - Quality: ✅ 46/46 tests, ✅ Build
   - _Requirements: 9.3_
 
 - [ ] 10.2 (P) 商品作成フォーム実装

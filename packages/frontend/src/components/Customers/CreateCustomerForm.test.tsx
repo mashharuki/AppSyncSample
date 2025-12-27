@@ -1,6 +1,6 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { generateClient } from 'aws-amplify/api';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import CreateCustomerForm from './CreateCustomerForm';
 
 // Mock Amplify
@@ -169,9 +169,7 @@ describe('CreateCustomerForm', () => {
   });
 
   it('should disable submit button while submitting', async () => {
-    mockGraphql.mockImplementation(
-      () => new Promise((resolve) => setTimeout(resolve, 100)),
-    );
+    mockGraphql.mockImplementation(() => new Promise((resolve) => setTimeout(resolve, 100)));
 
     render(<CreateCustomerForm onSuccess={mockOnSuccess} />);
 

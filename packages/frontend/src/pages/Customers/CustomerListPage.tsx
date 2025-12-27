@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
 import { generateClient } from 'aws-amplify/api';
+import { useEffect, useState } from 'react';
 import type { Customer, CustomerConnection } from '../../graphql/generated';
 
 const LIST_CUSTOMERS_QUERY = `
@@ -35,8 +35,8 @@ const CustomerListPage = () => {
         query: LIST_CUSTOMERS_QUERY,
         variables: {
           limit: 20,
-          nextToken: token
-        }
+          nextToken: token,
+        },
       });
 
       if ('data' in response && response.data) {
@@ -80,12 +80,14 @@ const CustomerListPage = () => {
   return (
     <div style={{ padding: '20px' }}>
       <h1>Customers</h1>
-      
-      <table style={{ 
-        width: '100%', 
-        borderCollapse: 'collapse',
-        marginTop: '20px'
-      }}>
+
+      <table
+        style={{
+          width: '100%',
+          borderCollapse: 'collapse',
+          marginTop: '20px',
+        }}
+      >
         <thead>
           <tr style={{ backgroundColor: '#f5f5f5' }}>
             <th style={{ padding: '12px', textAlign: 'left', borderBottom: '2px solid #ddd' }}>
@@ -129,7 +131,7 @@ const CustomerListPage = () => {
               border: 'none',
               borderRadius: '4px',
               cursor: 'pointer',
-              fontSize: '16px'
+              fontSize: '16px',
             }}
           >
             Next

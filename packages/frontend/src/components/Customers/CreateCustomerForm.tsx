@@ -1,6 +1,6 @@
+import { generateClient } from 'aws-amplify/api';
 import { useState } from 'react';
 import type { FormEvent } from 'react';
-import { generateClient } from 'aws-amplify/api';
 import type { CreateCustomerInput } from '../../graphql/generated';
 
 const CREATE_CUSTOMER_MUTATION = `

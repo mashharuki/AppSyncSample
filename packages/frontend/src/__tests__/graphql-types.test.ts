@@ -1,12 +1,12 @@
-import { describe, it, expect } from 'vitest';
-import type { 
-  Customer, 
+import { describe, expect, it } from 'vitest';
+import type {
   CreateCustomerInput,
-  Product,
+  Customer,
+  Mutation,
   Order,
-  SalesSummary,
+  Product,
   Query,
-  Mutation
+  SalesSummary,
 } from '../graphql/generated';
 
 describe('GraphQL Code Generation', () => {
@@ -16,7 +16,7 @@ describe('GraphQL Code Generation', () => {
       customerId: 'test-id',
       name: 'Test User',
       email: 'test@example.com',
-      orders: []
+      orders: [],
     };
 
     expect(customer).toBeDefined();
@@ -26,7 +26,7 @@ describe('GraphQL Code Generation', () => {
   it('should generate CreateCustomerInput type', () => {
     const input: CreateCustomerInput = {
       name: 'Test User',
-      email: 'test@example.com'
+      email: 'test@example.com',
     };
 
     expect(input).toBeDefined();
@@ -39,7 +39,7 @@ describe('GraphQL Code Generation', () => {
       name: 'Test Product',
       category: 'Electronics',
       price: 99.99,
-      description: 'Test description'
+      description: 'Test description',
     };
 
     expect(product).toBeDefined();
@@ -54,12 +54,12 @@ describe('GraphQL Code Generation', () => {
         customerId: 'customer-1',
         name: 'Test User',
         email: 'test@example.com',
-        orders: []
+        orders: [],
       },
       orderDate: '2025-12-27T00:00:00Z',
       totalAmount: 199.99,
       status: 'Pending',
-      orderItems: []
+      orderItems: [],
     };
 
     expect(order).toBeDefined();
@@ -70,7 +70,7 @@ describe('GraphQL Code Generation', () => {
     const summary: SalesSummary = {
       totalRevenue: 10000,
       orderCount: 50,
-      averageOrderValue: 200
+      averageOrderValue: 200,
     };
 
     expect(summary).toBeDefined();
@@ -93,7 +93,7 @@ describe('GraphQL Code Generation', () => {
       'listOrdersByCustomer',
       'getSalesSummary',
       'getProductRanking',
-      'getCustomerStats'
+      'getCustomerStats',
     ];
 
     // This test verifies type structure at compile time
@@ -105,7 +105,7 @@ describe('GraphQL Code Generation', () => {
     const expectedMutationFields: MutationKeys[] = [
       'createCustomer',
       'createProduct',
-      'createOrder'
+      'createOrder',
     ];
 
     expect(expectedMutationFields.length).toBe(3);

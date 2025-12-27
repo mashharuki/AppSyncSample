@@ -1,6 +1,6 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { generateClient } from 'aws-amplify/api';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import CustomerSearchForm from './CustomerSearchForm';
 
 // Mock Amplify
@@ -134,9 +134,7 @@ describe('CustomerSearchForm', () => {
   });
 
   it('should show loading state while searching', async () => {
-    mockGraphql.mockImplementation(
-      () => new Promise((resolve) => setTimeout(resolve, 100)),
-    );
+    mockGraphql.mockImplementation(() => new Promise((resolve) => setTimeout(resolve, 100)));
 
     render(<CustomerSearchForm />);
 
@@ -152,9 +150,7 @@ describe('CustomerSearchForm', () => {
   });
 
   it('should disable search button while searching', async () => {
-    mockGraphql.mockImplementation(
-      () => new Promise((resolve) => setTimeout(resolve, 100)),
-    );
+    mockGraphql.mockImplementation(() => new Promise((resolve) => setTimeout(resolve, 100)));
 
     render(<CustomerSearchForm />);
 
@@ -195,7 +191,7 @@ describe('CustomerSearchForm', () => {
     // Use getAllByText to find all instances and verify table headers exist
     const nameElements = screen.getAllByText(/name/i);
     expect(nameElements.length).toBeGreaterThan(0);
-    
+
     const emailElements = screen.getAllByText(/email/i);
     expect(emailElements.length).toBeGreaterThan(0);
   });

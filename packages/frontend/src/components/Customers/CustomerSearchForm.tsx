@@ -1,6 +1,6 @@
+import { generateClient } from 'aws-amplify/api';
 import { useState } from 'react';
 import type { FormEvent } from 'react';
-import { generateClient } from 'aws-amplify/api';
 import type { Customer } from '../../graphql/generated';
 
 const SEARCH_CUSTOMER_BY_EMAIL_QUERY = `

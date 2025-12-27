@@ -3,15 +3,19 @@ export type InputMaybe<T> = T;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
-export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
+export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = {
+  [_ in K]?: never;
+};
+export type Incremental<T> =
+  | T
+  | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: { input: string; output: string; }
-  String: { input: string; output: string; }
-  Boolean: { input: boolean; output: boolean; }
-  Int: { input: number; output: number; }
-  Float: { input: number; output: number; }
+  ID: { input: string; output: string };
+  String: { input: string; output: string };
+  Boolean: { input: boolean; output: boolean };
+  Int: { input: number; output: number };
+  Float: { input: number; output: number };
 };
 
 export type CreateCustomerInput = {
@@ -63,16 +67,13 @@ export type Mutation = {
   createProduct: Product;
 };
 
-
 export type MutationCreateCustomerArgs = {
   input: CreateCustomerInput;
 };
 
-
 export type MutationCreateOrderArgs = {
   input: CreateOrderInput;
 };
-
 
 export type MutationCreateProductArgs = {
   input: CreateProductInput;
@@ -143,38 +144,31 @@ export type Query = {
   searchCustomerByEmail?: Maybe<Customer>;
 };
 
-
 export type QueryGetCustomerArgs = {
   customerId: Scalars['ID']['input'];
 };
-
 
 export type QueryGetOrderArgs = {
   orderId: Scalars['ID']['input'];
 };
 
-
 export type QueryGetProductArgs = {
   productId: Scalars['ID']['input'];
 };
 
-
 export type QueryGetProductRankingArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
 };
-
 
 export type QueryListCustomersArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   nextToken?: InputMaybe<Scalars['String']['input']>;
 };
 
-
 export type QueryListOrdersArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   nextToken?: InputMaybe<Scalars['String']['input']>;
 };
-
 
 export type QueryListOrdersByCustomerArgs = {
   customerId: Scalars['ID']['input'];
@@ -182,19 +176,16 @@ export type QueryListOrdersByCustomerArgs = {
   nextToken?: InputMaybe<Scalars['String']['input']>;
 };
 
-
 export type QueryListProductsArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   nextToken?: InputMaybe<Scalars['String']['input']>;
 };
-
 
 export type QueryListProductsByCategoryArgs = {
   category: Scalars['String']['input'];
   limit?: InputMaybe<Scalars['Int']['input']>;
   nextToken?: InputMaybe<Scalars['String']['input']>;
 };
-
 
 export type QuerySearchCustomerByEmailArgs = {
   email: Scalars['String']['input'];
