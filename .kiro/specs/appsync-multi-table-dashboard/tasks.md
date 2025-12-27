@@ -166,7 +166,7 @@
   - データがない場合は全てのフィールドに0を返す
   - _Requirements: 7.1, 7.2_
 
-- [ ] 7.2 (P) 商品ランキングリゾルバー実装
+- [x] 7.2 (P) 商品ランキングリゾルバー実装
   - packages/cdk/lib/appsync/resolvers/analytics/getProductRanking.jsを作成
   - OrderItemsテーブルScanオペレーションで全注文明細を取得
   - リゾルバー内でproductIdごとに数量を集計し、販売数量でソート
@@ -305,7 +305,7 @@
 
 ### 12. ダッシュボード分析UIページ実装
 
-- [ ] 12.1 ダッシュボードトップページ実装
+- [x] 12.1 ダッシュボードトップページ実装
   - src/pages/Dashboard/DashboardPage.tsxを作成
   - getSalesSummaryクエリを実行し、売上サマリー(総売上、注文数、平均注文額)を取得
   - 売上サマリーをカード形式で3枚並べて表示(大きな数値とラベル)
@@ -323,7 +323,7 @@
   - AppSyncStackにDynamoDBStackのテーブルをpropsとして渡す
   - cdk deployで両スタックを同時デプロイ
   - デプロイ後、CloudFormation OutputsでAppSync APIエンドポイントとAPIキーを確認
-  - AWS Management ConsoleでAppSync APIスキーマ、リゾルバー、データソース設定を確認
+  - AWS CLIでAppSync APIスキーマ、リゾルバー、データソース設定を確認
   - _Requirements: 8.1, 8.3, 8.4_
 
 - [ ] 13.2 フロントエンド環境変数設定とビルド

@@ -394,9 +394,7 @@ const CreateOrderForm = () => {
             textAlign: 'right',
           }}
         >
-          <strong style={{ fontSize: '18px' }}>
-            合計金額: {formatCurrency(calculateTotal())}
-          </strong>
+          <strong style={{ fontSize: '18px' }}>合計金額: {formatCurrency(calculateTotal())}</strong>
         </div>
 
         <button

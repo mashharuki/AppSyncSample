@@ -125,9 +125,7 @@ const OrderListPage = () => {
                 <td style={{ padding: '12px' }}>{order.orderId}</td>
                 <td style={{ padding: '12px' }}>{order.customerId}</td>
                 <td style={{ padding: '12px' }}>{order.orderDate}</td>
-                <td style={{ padding: '12px' }}>
-                  ${order.totalAmount.toFixed(2)}
-                </td>
+                <td style={{ padding: '12px' }}>${order.totalAmount.toFixed(2)}</td>
                 <td style={{ padding: '12px' }}>{order.status}</td>
                 <td style={{ padding: '12px' }}>
                   <button

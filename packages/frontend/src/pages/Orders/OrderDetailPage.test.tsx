@@ -161,11 +161,11 @@ describe('OrderDetailPage', () => {
     expect(screen.getByText('2')).toBeInTheDocument(); // quantity
     expect(screen.getByText('1')).toBeInTheDocument(); // quantity
     expect(screen.getByText('$49.99')).toBeInTheDocument(); // unitPrice
-    
+
     // $200.01 appears twice (unitPrice and subtotal for item-2), so use getAllByText
     const price200Elements = screen.getAllByText('$200.01');
     expect(price200Elements).toHaveLength(2); // unitPrice and subtotal
-    
+
     expect(screen.getByText('$99.98')).toBeInTheDocument(); // subtotal for item-1 (2 * 49.99)
   });
 

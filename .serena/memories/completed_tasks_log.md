@@ -311,3 +311,229 @@ input CreateOrderItemInput {
 - All 90 frontend tests passing (76 existing + 14 new)
 - No TypeScript errors, build succeeds
 - Ready for routing integration
+
+---
+
+## Task 7.2: 商品ランキングリゾルバー実装 (2025-12-27)
+
+### Implementation Details
+- **Files Created**:
+  - `packages/cdk/lib/appsync/resolvers/analytics/getProductRanking/function-1-aggregateOrderItems.js` - Pipeline Function 1
+  - `packages/cdk/lib/appsync/resolvers/analytics/getProductRanking/function-2-batchGetProducts.js` - Pipeline Function 2
+  - `packages/cdk/lib/appsync/resolvers/analytics/getProductRanking/pipeline.js` - Pipeline orchestrator
+
+- **Files Modified**:
+  - `packages/cdk/lib/appsync/appsync-stack.ts` - Added Pipeline Resolver registration
+
+### TDD Cycle Executed
+1. **RED Phase**: Identified missing backend dependency for task 12.1
+   - Task 12.1 requires `getProductRanking` API but resolver was not implemented
+   - Followed TDD principle: implement backend first, then frontend
+
+2. **GREEN Phase**: Implemented Pipeline Resolver with two functions
+   - **Function 1 (AggregateOrderItems)**:
+     - Scans OrderItems table
+     - Aggregates quantity by productId
+     - Sorts by totalQuantity (descending)
+     - Applies limit (default: 10)
+     - Stores result in ctx.stash.productRankings
+   - **Function 2 (BatchGetProducts)**:
+     - BatchGetItem on Products table
+     - Fetches product details for ranking list
+     - Stores result in ctx.stash.products
+   - **Pipeline**:
+     - Merges productRankings with product details
+     - Returns array of {productId, productName, totalQuantity}
+
+3. **REFACTOR Phase**:
+   - Fixed Biome linting issues:
+     - Changed `forEach()` to `for...of` loops (performance)
+     - Changed unused `ctx` parameter to `_ctx`
+   - Applied Biome formatter
+   - CDK build successful
+
+4. **VERIFY Phase**:
+   - ✅ CDK TypeScript compilation successful
+   - ✅ Biome formatting applied
+   - ✅ No linting errors
+   - ✅ Pipeline Resolver registered in AppSync Stack
+
+### Key Patterns
+- **Pipeline Resolver Architecture**: Multi-step data aggregation
+- **Stash Usage**: Passing data between pipeline functions via ctx.stash
+- **N+1 Prevention**: BatchGetItem for products instead of individual GetItem calls
+- **Aggregation Logic**: Client-side aggregation in resolver (not DynamoDB Streams)
+- **APPSYNC_JS Runtime**: Modern JavaScript instead of VTL
+
+### GraphQL Schema
+```graphql
+type ProductRanking {
+  productId: ID!
+  productName: String!
+  totalQuantity: Int!
+}
+
+type Query {
+  getProductRanking(limit: Int): [ProductRanking!]!
+}
+```
+
+### Pipeline Flow
+1. **Before**: Context initialization
+2. **Function 1**: OrderItems Scan → Aggregate → Sort → Limit
+3. **Function 2**: Products BatchGetItem
+4. **After**: Merge rankings with product names
+
+### Requirements Satisfied
+- **Requirement 7.3**: Product ranking query implementation
+- **Requirement 7.4**: Sales quantity sorting
+- **Design**: Pipeline Resolver for multi-table analytics
+- **Performance**: Batch operations to avoid N+1 queries
+
+### Architecture Highlights
+- **Serverless Aggregation**: All aggregation logic in AppSync resolver (no Lambda)
+- **Scan Trade-off**: Full table scan acceptable for analytics use case (learning project)
+- **Future Optimization**: Could use DynamoDB Streams → aggregation table for production
+
+### Next Tasks
+- Task 12.1: ダッシュボードトップページ実装 (Dashboard page) - ✅ COMPLETED
+
+### Notes
+- Pipeline Resolver follows same pattern as getOrder (task 6.3)
+- Uses for...of instead of forEach (Biome recommendation)
+- Ready for frontend integration
+- CDK deployment required to activate resolver
+
+---
+
+## Task 12.1: ダッシュボードトップページ実装 (2025-12-27)
+
+### Implementation Details
+- **Files Created**:
+  - `packages/frontend/src/pages/Dashboard/DashboardPage.tsx` - Dashboard page component
+  - `packages/frontend/src/pages/Dashboard/DashboardPage.test.tsx` - Comprehensive test suite with 9 tests
+
+### TDD Cycle Executed
+1. **RED Phase**: Created 9 failing tests covering:
+   - Loading spinners for all three sections
+   - Sales summary display (Total Revenue, Order Count, Average Order Value)
+   - Product ranking table display (Rank, Product Name, Sales Quantity)
+   - Customer stats display (Total Customers, Active Customers)
+   - Error handling for each section independently
+   - Empty state handling (no data available)
+   - Data fetching on mount (3 concurrent queries)
+
+2. **GREEN Phase**: Implemented component to pass all tests
+   - **Three GraphQL Queries**:
+     - `getSalesSummary`: Returns totalRevenue, orderCount, averageOrderValue
+     - `getProductRanking(limit: 10)`: Returns product rankings array
+     - `getCustomerStats`: Returns totalCustomers, activeCustomers
+   - **Three Independent Sections**:
+     - Sales Summary: 3 cards (Total Revenue, Order Count, Avg Order Value)
+     - Product Ranking: Table with rank column
+     - Customer Stats: 2 cards (Total Customers, Active Customers)
+   - **State Management**: Separate loading/error/data states for each section
+   - **Concurrent Fetching**: All 3 queries triggered in useEffect
+   - **Currency Formatting**: Intl.NumberFormat for USD currency
+   - **Error Isolation**: Each section handles its own errors independently
+
+3. **REFACTOR Phase**:
+   - Fixed TypeScript compilation errors:
+     - Added `if ('data' in response)` type guards for GraphQL responses
+   - Updated tests to handle multiple elements with same text:
+     - Changed `getByText()` to `getAllByText().length > 0`
+   - Applied consistent error handling patterns
+
+4. **VERIFY Phase**:
+   - ✅ 9/9 new tests passed
+   - ✅ 99/99 total frontend tests passed (no regressions)
+   - ✅ TypeScript compilation successful
+   - ✅ Vite build successful (245.01 kB bundle)
+
+### Key Patterns
+- **Multi-Query Dashboard**: Three independent data sources fetched concurrently
+- **Independent Error Handling**: Each section can fail without affecting others
+- **Card-Based Layout**: CSS Grid for responsive card arrangement
+- **Table Display**: Product ranking uses semantic table structure
+- **Currency Formatting**: Native Intl.NumberFormat API
+- **Type Safety**: TypeScript interfaces for all GraphQL responses
+
+### Testing Coverage
+- Loading state for all sections (spinners)
+- Sales summary data display and formatting
+- Product ranking table with multiple rows
+- Customer stats display
+- Independent error handling per section
+- Empty state handling (no product rankings)
+- Concurrent data fetching verification
+- Multiple elements with same text (3 sales cards)
+
+### Requirements Satisfied
+- **Requirement 9.5**: Dashboard analytics page implementation
+- **Requirement 9.7**: Loading indicators during data fetch
+- **Requirement 9.8**: Error message display on failure
+- **Requirement 7.1-7.2**: Sales summary display
+- **Requirement 7.3-7.4**: Product ranking display
+- **Requirement 7.5-7.6**: Customer statistics display
+
+### Component Structure
+```
+DashboardPage
+├── Sales Summary Section (3 cards)
+│   ├── Total Revenue Card
+│   ├── Order Count Card
+│   └── Average Order Value Card
+├── Product Ranking Section (table)
+│   └── Table with Rank, Product Name, Sales Quantity columns
+└── Customer Stats Section (2 cards)
+    ├── Total Customers Card
+    └── Active Customers Card
+```
+
+### GraphQL Queries Used
+```graphql
+# Query 1
+query GetSalesSummary {
+  getSalesSummary {
+    totalRevenue
+    orderCount
+    averageOrderValue
+  }
+}
+
+# Query 2
+query GetProductRanking($limit: Int) {
+  getProductRanking(limit: $limit) {
+    productId
+    productName
+    totalQuantity
+  }
+}
+
+# Query 3
+query GetCustomerStats {
+  getCustomerStats {
+    totalCustomers
+    activeCustomers
+  }
+}
+```
+
+### Architecture Highlights
+- **Concurrent Queries**: Uses Promise-based async/await, not Promise.all
+- **Resilient Design**: One section failing doesn't break entire dashboard
+- **Performance**: Three queries run in parallel on component mount
+- **Responsive Layout**: CSS Grid auto-fit for various screen sizes
+- **Type Guards**: Proper TypeScript type narrowing for GraphQL responses
+
+### Next Tasks
+- Task 13.1: CDK全スタック統合とデプロイ (Full stack deployment)
+
+### Notes
+- Component follows monorepo structure and coding conventions
+- Uses inline styling consistent with other pages
+- Currency formatting in USD (can be localized later)
+- All 99 frontend tests passing (90 existing + 9 new)
+- No TypeScript errors, build succeeds
+- Ready for routing integration
+- Demonstrates AppSync analytics capabilities with multi-table aggregation

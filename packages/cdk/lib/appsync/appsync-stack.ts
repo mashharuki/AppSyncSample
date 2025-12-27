@@ -268,6 +268,44 @@ export class AppSyncStack extends Stack {
       code: Code.fromAsset(join(__dirname, 'resolvers/analytics/getSalesSummary.js')),
     });
 
+    // ===== Pipeline Resolver: Query.getProductRanking =====
+
+    // Function 1: AggregateOrderItems
+    const aggregateOrderItemsFunction = new AppsyncFunction(this, 'AggregateOrderItemsFunction', {
+      name: 'AggregateOrderItemsFunction',
+      api: this.api,
+      dataSource: orderItemsDataSource,
+      runtime: FunctionRuntime.JS_1_0_0,
+      code: Code.fromAsset(
+        join(__dirname, 'resolvers/analytics/getProductRanking/function-1-aggregateOrderItems.js'),
+      ),
+    });
+
+    // Function 2: BatchGetProducts
+    const batchGetProductsForRankingFunction = new AppsyncFunction(
+      this,
+      'BatchGetProductsForRankingFunction',
+      {
+        name: 'BatchGetProductsForRankingFunction',
+        api: this.api,
+        dataSource: productsDataSource,
+        runtime: FunctionRuntime.JS_1_0_0,
+        code: Code.fromAsset(
+          join(__dirname, 'resolvers/analytics/getProductRanking/function-2-batchGetProducts.js'),
+        ),
+      },
+    );
+
+    // Query.getProductRanking Pipeline Resolver
+    new Resolver(this, 'GetProductRankingResolver', {
+      api: this.api,
+      typeName: 'Query',
+      fieldName: 'getProductRanking',
+      runtime: FunctionRuntime.JS_1_0_0,
+      pipelineConfig: [aggregateOrderItemsFunction, batchGetProductsForRankingFunction],
+      code: Code.fromAsset(join(__dirname, 'resolvers/analytics/getProductRanking/pipeline.js')),
+    });
+
     // Query.getCustomerStats リゾルバー
     new Resolver(this, 'GetCustomerStatsResolver', {
       api: this.api,
