@@ -69,11 +69,11 @@ Implemented with TDD approach (10 validation tests, all passing).
 4. ✅ `searchCustomerByEmail` - DynamoDB Query on email-gsi (Task 4.2)
 5. ✅ **`Customer.orders`** - Field Resolver with customer-order-gsi (Task 4.3)
 
-### Product Resolvers (3/5 completed) ⚙️
+### Product Resolvers (4/5 completed) ⚙️
 1. ✅ `listProducts` - DynamoDB Scan with pagination (Task 5.1)
 2. ✅ `getProduct` - DynamoDB GetItem (Task 5.1)
 3. ✅ `createProduct` - DynamoDB PutItem with UUID generation and price validation (Task 5.1)
-4. ⏳ `listProductsByCategory` - DynamoDB Query on category-gsi (Task 5.2)
+4. ✅ `listProductsByCategory` - DynamoDB Query on category-gsi (Task 5.2)
 5. ⏳ `Product.orderItems` - Field Resolver (future)
 
 ### Field Resolvers Implemented
@@ -96,10 +96,10 @@ All 8 resolvers (5 customer + 3 product) registered in `packages/cdk/lib/appsync
 - Data Sources: CustomersDataSource, ProductsDataSource, OrdersDataSource
 
 ### Test Coverage
-- All 26 resolver tests passing (16 customer + 10 product)
+- All 29 resolver tests passing (16 customer + 13 product)
 - Test files:
   - `packages/cdk/test/appsync/resolvers/customers.test.ts` (16 tests)
-  - `packages/cdk/test/appsync/resolvers/products.test.ts` (10 tests) - Added in Task 5.1
+  - `packages/cdk/test/appsync/resolvers/products.test.ts` (13 tests) - Updated in Task 5.2
 - Validates:
   - Query/Mutation resolvers
   - Field resolvers
@@ -155,10 +155,46 @@ All 8 resolvers (5 customer + 3 product) registered in `packages/cdk/lib/appsync
 - Ran build check (passed)
 - All 62 tests passing (including 10 new product tests)
 
-### Code Quality Checks
+### Code Quality Checks (Task 5.1)
 ✅ Lint: No errors
 ✅ Build: TypeScript compilation successful
 ✅ Tests: 62/62 passing (26 resolver tests)
+✅ Format: Biome compliant
+
+## Task 5.2 Implementation Details
+
+### TDD Cycle (Kent Beck's Red-Green-Refactor)
+
+#### RED Phase
+- Added 3 failing tests to `packages/cdk/test/appsync/resolvers/products.test.ts`:
+  1. listProductsByCategory resolver attached to Query.listProductsByCategory
+  2. Uses ProductsDataSource
+  3. Uses APPSYNC_JS runtime
+- Updated resolver count test from 3 to 4 product resolvers
+- All tests failed as expected (resolver not implemented)
+
+#### GREEN Phase
+1. Created `listProductsByCategory.js` resolver:
+   - DynamoDB Query operation on category-gsi index
+   - Category normalization (toLowerCase) for consistent querying
+   - Pagination support (limit: 20 default, nextToken)
+   - GSI query with expression `category = :category`
+   - Returns ProductConnection format (items, nextToken)
+   - Error handling with util.error()
+2. Integrated resolver into AppSyncStack:
+   - Registered ListProductsByCategoryResolver with ProductsDataSource
+   - All 13 product tests passed (10 existing + 3 new)
+
+#### REFACTOR Phase
+- Ran Biome formatter (no changes needed - already compliant)
+- Ran Biome lint check (passed)
+- All 65 tests passing (no regressions)
+- Clean code with proper comments
+
+### Code Quality Checks (Task 5.2)
+✅ Lint: No errors
+✅ Build: TypeScript compilation successful
+✅ Tests: 65/65 passing (29 resolver tests)
 ✅ Format: Biome compliant
 
 ### Implementation Details
@@ -370,3 +406,4 @@ type OrderItem {
   - `listProducts.js` ✅ (Task 5.1)
   - `getProduct.js` ✅ (Task 5.1)
   - `createProduct.js` ✅ (Task 5.1)
+  - `listProductsByCategory.js` ✅ (Task 5.2)

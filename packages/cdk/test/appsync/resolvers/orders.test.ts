@@ -1,0 +1,176 @@
+import { App } from 'aws-cdk-lib';
+import { Template } from 'aws-cdk-lib/assertions';
+import { AttributeType, BillingMode, Table } from 'aws-cdk-lib/aws-dynamodb';
+import { describe, expect, it } from 'vitest';
+import { AppSyncStack } from '../../../lib/appsync/appsync-stack';
+
+describe('Order Resolvers', () => {
+  /**
+   * テストヘルパー: モックDynamoDBテーブルを作成
+   */
+  const createMockDynamoDBStack = (app: App) => {
+    const { Stack } = require('aws-cdk-lib');
+    const stack = new Stack(app, 'MockDynamoDBStack');
+
+    const customersTable = new Table(stack, 'CustomersTable', {
+      partitionKey: { name: 'customerId', type: AttributeType.STRING },
+      sortKey: { name: 'customerId', type: AttributeType.STRING },
+      billingMode: BillingMode.PAY_PER_REQUEST,
+    });
+
+    const productsTable = new Table(stack, 'ProductsTable', {
+      partitionKey: { name: 'productId', type: AttributeType.STRING },
+      sortKey: { name: 'productId', type: AttributeType.STRING },
+      billingMode: BillingMode.PAY_PER_REQUEST,
+    });
+
+    const ordersTable = new Table(stack, 'OrdersTable', {
+      partitionKey: { name: 'orderId', type: AttributeType.STRING },
+      sortKey: { name: 'orderId', type: AttributeType.STRING },
+      billingMode: BillingMode.PAY_PER_REQUEST,
+    });
+
+    const orderItemsTable = new Table(stack, 'OrderItemsTable', {
+      partitionKey: { name: 'orderItemId', type: AttributeType.STRING },
+      sortKey: { name: 'orderItemId', type: AttributeType.STRING },
+      billingMode: BillingMode.PAY_PER_REQUEST,
+    });
+
+    return { customersTable, productsTable, ordersTable, orderItemsTable };
+  };
+
+  describe('listOrders Resolver', () => {
+    it('should create listOrders resolver attached to Query.listOrders', () => {
+      // Arrange
+      const app = new App();
+      const tables = createMockDynamoDBStack(app);
+
+      // Act
+      const stack = new AppSyncStack(app, 'TestAppSyncStack', tables);
+      const template = Template.fromStack(stack);
+
+      // Assert
+      // listOrdersリゾルバーが作成されていることを確認
+      template.hasResourceProperties('AWS::AppSync::Resolver', {
+        TypeName: 'Query',
+        FieldName: 'listOrders',
+      });
+    });
+
+    it('should use OrdersDataSource for listOrders resolver', () => {
+      // Arrange
+      const app = new App();
+      const tables = createMockDynamoDBStack(app);
+
+      // Act
+      const stack = new AppSyncStack(app, 'TestAppSyncStack', tables);
+      const template = Template.fromStack(stack);
+
+      // Assert
+      // OrdersDataSourceを使用していることを確認
+      template.hasResourceProperties('AWS::AppSync::Resolver', {
+        TypeName: 'Query',
+        FieldName: 'listOrders',
+        DataSourceName: 'OrdersDataSource',
+      });
+    });
+
+    it('should use APPSYNC_JS runtime for listOrders resolver', () => {
+      // Arrange
+      const app = new App();
+      const tables = createMockDynamoDBStack(app);
+
+      // Act
+      const stack = new AppSyncStack(app, 'TestAppSyncStack', tables);
+      const template = Template.fromStack(stack);
+
+      // Assert
+      // APPSYNC_JSランタイムを使用していることを確認
+      template.hasResourceProperties('AWS::AppSync::Resolver', {
+        TypeName: 'Query',
+        FieldName: 'listOrders',
+        Runtime: {
+          Name: 'APPSYNC_JS',
+          RuntimeVersion: '1.0.0',
+        },
+      });
+    });
+  });
+
+  describe('listOrdersByCustomer Resolver', () => {
+    it('should create listOrdersByCustomer resolver attached to Query.listOrdersByCustomer', () => {
+      // Arrange
+      const app = new App();
+      const tables = createMockDynamoDBStack(app);
+
+      // Act
+      const stack = new AppSyncStack(app, 'TestAppSyncStack', tables);
+      const template = Template.fromStack(stack);
+
+      // Assert
+      template.hasResourceProperties('AWS::AppSync::Resolver', {
+        TypeName: 'Query',
+        FieldName: 'listOrdersByCustomer',
+      });
+    });
+
+    it('should use OrdersDataSource for listOrdersByCustomer resolver', () => {
+      // Arrange
+      const app = new App();
+      const tables = createMockDynamoDBStack(app);
+
+      // Act
+      const stack = new AppSyncStack(app, 'TestAppSyncStack', tables);
+      const template = Template.fromStack(stack);
+
+      // Assert
+      template.hasResourceProperties('AWS::AppSync::Resolver', {
+        TypeName: 'Query',
+        FieldName: 'listOrdersByCustomer',
+        DataSourceName: 'OrdersDataSource',
+      });
+    });
+
+    it('should use APPSYNC_JS runtime for listOrdersByCustomer resolver', () => {
+      // Arrange
+      const app = new App();
+      const tables = createMockDynamoDBStack(app);
+
+      // Act
+      const stack = new AppSyncStack(app, 'TestAppSyncStack', tables);
+      const template = Template.fromStack(stack);
+
+      // Assert
+      template.hasResourceProperties('AWS::AppSync::Resolver', {
+        TypeName: 'Query',
+        FieldName: 'listOrdersByCustomer',
+        Runtime: {
+          Name: 'APPSYNC_JS',
+          RuntimeVersion: '1.0.0',
+        },
+      });
+    });
+  });
+
+  describe('Resolver Count', () => {
+    it('should create exactly 2 order query resolvers for task 6.1', () => {
+      // Arrange
+      const app = new App();
+      const tables = createMockDynamoDBStack(app);
+
+      // Act
+      const stack = new AppSyncStack(app, 'TestAppSyncStack', tables);
+      const template = Template.fromStack(stack);
+
+      // Assert
+      // listOrders、listOrdersByCustomerの2つのリゾルバーが作成される
+      const resolvers = template.findResources('AWS::AppSync::Resolver');
+      const orderResolvers = Object.values(resolvers).filter((resolver) => {
+        // biome-ignore lint/suspicious/noExplicitAny: CloudFormation template types are dynamic
+        const fieldName = (resolver as any).Properties.FieldName;
+        return fieldName === 'listOrders' || fieldName === 'listOrdersByCustomer';
+      });
+      expect(orderResolvers.length).toBe(2);
+    });
+  });
+});

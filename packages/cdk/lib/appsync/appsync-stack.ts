@@ -144,6 +144,38 @@ export class AppSyncStack extends Stack {
       code: Code.fromAsset(join(__dirname, 'resolvers/products/createProduct.js')),
     });
 
+    // Query.listProductsByCategory リゾルバー
+    new Resolver(this, 'ListProductsByCategoryResolver', {
+      api: this.api,
+      typeName: 'Query',
+      fieldName: 'listProductsByCategory',
+      dataSource: productsDataSource,
+      runtime: FunctionRuntime.JS_1_0_0,
+      code: Code.fromAsset(join(__dirname, 'resolvers/products/listProductsByCategory.js')),
+    });
+
+    // ===== 注文管理リゾルバー =====
+
+    // Query.listOrders リゾルバー
+    new Resolver(this, 'ListOrdersResolver', {
+      api: this.api,
+      typeName: 'Query',
+      fieldName: 'listOrders',
+      dataSource: ordersDataSource,
+      runtime: FunctionRuntime.JS_1_0_0,
+      code: Code.fromAsset(join(__dirname, 'resolvers/orders/listOrders.js')),
+    });
+
+    // Query.listOrdersByCustomer リゾルバー
+    new Resolver(this, 'ListOrdersByCustomerResolver', {
+      api: this.api,
+      typeName: 'Query',
+      fieldName: 'listOrdersByCustomer',
+      dataSource: ordersDataSource,
+      runtime: FunctionRuntime.JS_1_0_0,
+      code: Code.fromAsset(join(__dirname, 'resolvers/orders/listOrdersByCustomer.js')),
+    });
+
     // ===== フィールドリゾルバー =====
 
     // Customer.orders フィールドリゾルバー

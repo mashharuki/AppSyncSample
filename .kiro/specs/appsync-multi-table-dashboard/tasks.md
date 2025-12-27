@@ -116,7 +116,7 @@
   - 価格バリデーション(正の数値チェック)をリゾルバー内で実行
   - _Requirements: 5.1, 5.2, 5.4_
 
-- [ ] 5.2 (P) カテゴリフィルタリングリゾルバー実装
+- [x] 5.2 (P) カテゴリフィルタリングリゾルバー実装
   - packages/cdk/lib/appsync/resolvers/products/listProductsByCategory.jsを作成
   - category-gsiを使用したDynamoDB Queryオペレーションを実装
   - categoryパラメータを小文字に正規化(toLowerCase)し、GSIクエリを実行
@@ -126,7 +126,7 @@
 
 ### 6. 注文管理リゾルバー実装
 
-- [ ] 6.1 注文基本クエリリゾルバー実装
+- [x] 6.1 注文基本クエリリゾルバー実装
   - packages/cdk/lib/appsync/resolvers/orders/listOrders.jsを作成
   - DynamoDB Scanオペレーションでlimit、nextTokenパラメータを処理
   - packages/cdk/lib/appsync/resolvers/orders/listOrdersByCustomer.jsを作成

@@ -207,8 +207,8 @@ describe('Product Resolvers', () => {
     });
   });
 
-  describe('Resolver Count', () => {
-    it('should create exactly 3 product-related resolvers', () => {
+  describe('listProductsByCategory Resolver', () => {
+    it('should create listProductsByCategory resolver attached to Query.listProductsByCategory', () => {
       // Arrange
       const app = new App();
       const tables = createMockDynamoDBStack(app);
@@ -218,7 +218,62 @@ describe('Product Resolvers', () => {
       const template = Template.fromStack(stack);
 
       // Assert
-      // listProducts、getProduct、createProductの3つのリゾルバーが作成される
+      template.hasResourceProperties('AWS::AppSync::Resolver', {
+        TypeName: 'Query',
+        FieldName: 'listProductsByCategory',
+      });
+    });
+
+    it('should use ProductsDataSource for listProductsByCategory resolver', () => {
+      // Arrange
+      const app = new App();
+      const tables = createMockDynamoDBStack(app);
+
+      // Act
+      const stack = new AppSyncStack(app, 'TestAppSyncStack', tables);
+      const template = Template.fromStack(stack);
+
+      // Assert
+      template.hasResourceProperties('AWS::AppSync::Resolver', {
+        TypeName: 'Query',
+        FieldName: 'listProductsByCategory',
+        DataSourceName: 'ProductsDataSource',
+      });
+    });
+
+    it('should use APPSYNC_JS runtime for listProductsByCategory resolver', () => {
+      // Arrange
+      const app = new App();
+      const tables = createMockDynamoDBStack(app);
+
+      // Act
+      const stack = new AppSyncStack(app, 'TestAppSyncStack', tables);
+      const template = Template.fromStack(stack);
+
+      // Assert
+      template.hasResourceProperties('AWS::AppSync::Resolver', {
+        TypeName: 'Query',
+        FieldName: 'listProductsByCategory',
+        Runtime: {
+          Name: 'APPSYNC_JS',
+          RuntimeVersion: '1.0.0',
+        },
+      });
+    });
+  });
+
+  describe('Resolver Count', () => {
+    it('should create exactly 4 product-related resolvers', () => {
+      // Arrange
+      const app = new App();
+      const tables = createMockDynamoDBStack(app);
+
+      // Act
+      const stack = new AppSyncStack(app, 'TestAppSyncStack', tables);
+      const template = Template.fromStack(stack);
+
+      // Assert
+      // listProducts、getProduct、createProduct、listProductsByCategoryの4つのリゾルバーが作成される
       const resolvers = template.findResources('AWS::AppSync::Resolver');
       const productResolvers = Object.values(resolvers).filter((resolver) => {
         // biome-ignore lint/suspicious/noExplicitAny: CloudFormation template types are dynamic
@@ -226,10 +281,11 @@ describe('Product Resolvers', () => {
         return (
           fieldName === 'listProducts' ||
           fieldName === 'getProduct' ||
-          fieldName === 'createProduct'
+          fieldName === 'createProduct' ||
+          fieldName === 'listProductsByCategory'
         );
       });
-      expect(productResolvers.length).toBe(3);
+      expect(productResolvers.length).toBe(4);
     });
   });
 });
